@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/index.css";
 import Bubble from "./Bubble";
 import calendartwo from "../assets/icons/calendar-two.png";
@@ -8,8 +8,14 @@ import flag from "../assets/icons/red-flag.png";
 import Lists from "./Lists";
 
 const SideNav = () => {
+  const [data, setData] = useState('')
+
+  const listsToNav = (listData: string) => {
+    setData(listData)
+  }
+
   return (
-    <nav className="max-w-[25%] h-[100%] border-r-2 border-gray-400 pt-6">
+    <nav className="w-[25%] h-[100%] border-r-2 border-gray-400 pt-6">
       <input
         type="text"
         placeholder="Search"
@@ -23,7 +29,8 @@ const SideNav = () => {
         <Bubble title="All" icon={boxes} />
         <Bubble title="Flagged" icon={flag} />
       </div>
-      <Lists />
+      <Lists listsToNav={listsToNav} />
+      {data}
     </nav>
   );
 };

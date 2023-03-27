@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/index.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideNav from "../components/SideNav";
+import Main from "../components/Main";
 
-function App() {
+const App = () => {
+  const [activePage, setActivePage] = useState('')
+
   return (
-    <main className="h-[100vh] ">
-      <SideNav />
-      
+    <main>
+      <Main />
     </main>
   );
 }
