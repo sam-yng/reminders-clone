@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../css/index.css'
 import SideNav from "./SideNav";
+import Lists from "./Lists";
+import { ListContext } from "../pages/App";
 
 const Main = () => {
-    const [activePage, setActivePage] = useState('')
+    const value = React.useContext(ListContext)
+
+    useEffect(() => {
+        const listValues = JSON.parse(localStorage.getItem('LIST_STATE')!)
+        console.log(listValues.list)
+    }, [])
+
+    // for (let i = 0; i < )
 
     return(
-        <main className="h-[100vh]">
-            <SideNav />
+        <main>
+            <h1 className="ml-16 mt-4 text-[45px]">{value}</h1>
         </main>
     )
 }

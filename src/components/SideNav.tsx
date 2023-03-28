@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactComponentElement, useEffect, useState } from "react";
 import "../css/index.css";
 import Bubble from "./Bubble";
 import calendartwo from "../assets/icons/calendar-two.png";
@@ -7,11 +7,13 @@ import boxes from "../assets/icons/boxes.png";
 import flag from "../assets/icons/red-flag.png";
 import Lists from "./Lists";
 
-const SideNav = () => {
+const SideNav = (props: any) => {
   const [data, setData] = useState('')
 
+  props.func(data)
+
   const listsToNav = (listData: string) => {
-    setData(listData)
+      setData(listData)
   }
 
   return (
@@ -30,7 +32,6 @@ const SideNav = () => {
         <Bubble title="Flagged" icon={flag} />
       </div>
       <Lists listsToNav={listsToNav} />
-      {data}
     </nav>
   );
 };
