@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideNav from "../components/SideNav";
 import Main from "../components/Main";
 
-export const ListContext = React.createContext('')
+// export const ListContext = React.createContext('')
 
 const App = () => {
   const [page, setPage] = useState<string>('')
@@ -19,9 +19,9 @@ const App = () => {
   return (
     <main className="h-[100vh] flex flex-row">
       <SideNav func={pullData} />
-      <ListContext.Provider value={page} >
+      {/* <ListContext.Provider value={page} > */}
         <Main />
-      </ListContext.Provider>
+      {/* </ListContext.Provider> */}
     </main>
   );
 }

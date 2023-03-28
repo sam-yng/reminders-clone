@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { PureComponent, useEffect } from "react";
 import { useState } from "react";
 import "../css/index.css";
 import plus from '../assets/icons/plus.png'
@@ -13,7 +13,7 @@ const initialList: Array<{id: string, name: string}> = [
 const Lists = ({ listsToNav }: any) => {
   const [listData, setListData] = useState({
     list: initialList,
-    isShowList: true
+    isShowList: true,
   })
   const [name, setInput] = useState('')
 
@@ -27,6 +27,10 @@ const Lists = ({ listsToNav }: any) => {
       localStorage.setItem('LIST_STATE', JSON.stringify(listData))
     })
   }, [listData]);
+
+  useEffect(() => {
+    console.log(listData)
+  }, [listData])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
