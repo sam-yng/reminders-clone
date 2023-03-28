@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "../css/index.css";
 import plus from '../assets/icons/plus.png'
-import arrow from '../assets/icons/right-arrow.png'
 import { v4 as uuidv4 } from 'uuid'
-import { useReducer } from "react";
+import cross from '../assets/icons/close.png'
+import { linkSync } from "fs";
 
 const initialList: Array<{id: string, name: string}> = [
   { id: uuidv4(), name: "Reminders" }
@@ -18,13 +18,15 @@ const Lists = ({ listsToNav }: any) => {
   const [name, setInput] = useState('')
 
   useEffect(() => {
-    localStorage.setItem('LIST_STATE', JSON.stringify(listData));
-  }, [listData]);
-
-  useEffect(() => {
     const data = localStorage.getItem('LIST_STATE')
     if (data !== null) setListData(JSON.parse(data))
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.setItem('LIST_STATE', JSON.stringify(listData))
+    })
+  }, [listData]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
@@ -57,12 +59,13 @@ const Lists = ({ listsToNav }: any) => {
       <ul className="ml-[16px] mt-2 mr-[16px]">
         {listData.isShowList && listData.list.map((item) => (
           <div className="flex flex-row justify-between">
-          <button onClick={() => listsToNav(item.name)}>
-            <li className="m-2 font-robreg" key={item.id}>{item.name}</li>
-          </button>
-          {/* <button onClick={handleButton}>
-            <img className="h-5" src={arrow} />
-          </button> */}
+            <button onClick={() => listsToNav(item.name)}>
+              <li className="m-2 font-robreg" key={item.id}>{item.name}</li>
+            </button>
+            <button onClick={() =>
+              setListData({ ...listData, list: listData.list.splice(0, listData.list.length - 1)})} >
+               <img className="h-3" src={cross} />
+            </button>
           </div>
         ))}
       </ul>
