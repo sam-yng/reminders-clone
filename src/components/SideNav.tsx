@@ -7,15 +7,7 @@ import boxes from "../assets/icons/boxes.png";
 import flag from "../assets/icons/red-flag.png";
 import Lists from "./Lists";
 
-const SideNav = (props: any) => {
-  const [data, setData] = useState('')
-
-  props.func(data)
-
-  const listsToNav = (listData: string) => {
-      setData(listData)
-  }
-
+const SideNav = ( listData: any, setListData: any ) => {
   return (
     <nav className="w-[25%] h-[100%] border-r-2 border-gray-400 pt-6">
       <input
@@ -31,7 +23,7 @@ const SideNav = (props: any) => {
         <Bubble title="All" icon={boxes} />
         <Bubble title="Flagged" icon={flag} />
       </div>
-      <Lists listsToNav={listsToNav} />
+      <Lists listData={listData} setListData={setListData} />
     </nav>
   );
 };

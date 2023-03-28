@@ -6,15 +6,16 @@ import { v4 as uuidv4 } from 'uuid'
 import cross from '../assets/icons/close.png'
 import { linkSync } from "fs";
 
-const initialList: Array<{id: string, name: string}> = [
-  { id: uuidv4(), name: "Reminders" }
-]
 
-const Lists = ({ listsToNav }: any) => {
-  const [listData, setListData] = useState({
-    list: initialList,
-    isShowList: true,
-  })
+// const initialList: Array<{id: string, name: string}> = [
+//   { id: uuidv4(), name: "Reminders" }
+// ]
+
+const Lists = ( listData: any, setListData: any ) => {
+  // const [listData, setListData] = useState({
+  //   list: initialList,
+  //   isShowList: true,
+  // })
   const [name, setInput] = useState('')
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Lists = ({ listsToNav }: any) => {
   }, [listData]);
 
   useEffect(() => {
-    console.log(listData)
+    console.log('dog')
   }, [listData])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +64,7 @@ const Lists = ({ listsToNav }: any) => {
       <ul className="ml-[16px] mt-2 mr-[16px]">
         {listData.isShowList && listData.list.map((item) => (
           <div className="flex flex-row justify-between">
-            <button onClick={() => listsToNav(item.name)}>
+            <button>
               <li className="m-2 font-robreg" key={item.id}>{item.name}</li>
             </button>
             <button onClick={() =>

@@ -4,7 +4,7 @@ import SideNav from "./SideNav";
 import Lists from "./Lists";
 // import { ListContext } from "../pages/App";
 
-const Main = () => {
+const Main = (listData: any, setListData: any ) => {
     // const value = React.useContext(ListContext)
     // const listValues = JSON.parse(localStorage.getItem('LIST_STATE')!)
     // const listInfo = listValues.list
