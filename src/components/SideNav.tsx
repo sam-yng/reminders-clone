@@ -7,7 +7,7 @@ import boxes from "../assets/icons/boxes.png";
 import flag from "../assets/icons/red-flag.png";
 import Lists from "./Lists";
 
-const SideNav = ( listData: any, setListData: any ) => {
+const SideNav = () => {
   return (
     <nav className="w-[25%] h-[100%] border-r-2 border-gray-400 pt-6">
       <input
@@ -23,7 +23,7 @@ const SideNav = ( listData: any, setListData: any ) => {
         <Bubble title="All" icon={boxes} />
         <Bubble title="Flagged" icon={flag} />
       </div>
-      <Lists listData={listData} setListData={setListData} />
+      <Lists />
     </nav>
   );
 };

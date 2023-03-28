@@ -4,45 +4,37 @@ import "../css/index.css";
 import plus from '../assets/icons/plus.png'
 import { v4 as uuidv4 } from 'uuid'
 import cross from '../assets/icons/close.png'
-import { linkSync } from "fs";
+import { useReminders } from "../utils/RemindersContext";
 
-
-// const initialList: Array<{id: string, name: string}> = [
-//   { id: uuidv4(), name: "Reminders" }
-// ]
-
-const Lists = ( listData: any, setListData: any ) => {
-  // const [listData, setListData] = useState({
-  //   list: initialList,
-  //   isShowList: true,
-  // })
+const Lists = () => {
+  const { lists, setLists } = useReminders();
   const [name, setInput] = useState('')
 
   useEffect(() => {
     const data = localStorage.getItem('LIST_STATE')
-    if (data !== null) setListData(JSON.parse(data))
+    if (data !== null) setLists(JSON.parse(data))
   }, [])
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem('LIST_STATE', JSON.stringify(listData))
+      localStorage.setItem('LIST_STATE', JSON.stringify(lists))
     })
-  }, [listData]);
+  }, [lists]);
 
-  useEffect(() => {
-    console.log('dog')
-  }, [listData])
+  // useEffect(() => {
+  //   console.log(listData)
+  // }, [listData])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
   }
 
   const handleAdd = () => {
-    const newList = listData.list.concat({
+    const newList = lists.concat({
       id: uuidv4(),
       name
     })
-    setListData({ ...listData, list: newList })
+    setLists(newList)
     setInput('')
   }
 
@@ -62,13 +54,13 @@ const Lists = ( listData: any, setListData: any ) => {
       </div>
       <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
       <ul className="ml-[16px] mt-2 mr-[16px]">
-        {listData.isShowList && listData.list.map((item) => (
+        {lists.map((item) => (
           <div className="flex flex-row justify-between">
             <button>
               <li className="m-2 font-robreg" key={item.id}>{item.name}</li>
             </button>
             <button onClick={() =>
-              setListData({ ...listData, list: listData.list.splice(0, listData.list.length - 1)})} >
+              setLists(lists.filter(list => list.id !== item.id))} >
                <img className="h-3" src={cross} />
             </button>
           </div>
