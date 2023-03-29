@@ -10,13 +10,26 @@ export type List = {
     name: string;
 }
 
+export type Tasks = {
+    id?: string
+    name: string
+    complete: false
+}
+
 export type RemindersContextType = {
     lists: List[];
     activeListId: string | null;
     setLists: (lists: List[]) => void;
     setActiveListId: (listId: string | null) => void;
+
     activePage: string | null
     setActivePage: (listName: string | null) => void
+
+    taskList: Tasks[]
+    setTaskList: (taskList: Tasks[]) => void
+
+    taskCount: number | null
+    setTaskCount: (taskCount: number | null) => void
 }
 
 const RemindersContext = createContext<RemindersContextType | undefined>(undefined);
@@ -27,6 +40,8 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     const [lists, setLists] = useState<List[]>([]);
     const [activeListId, setActiveListId] = useState<string | null>(null);
     const [activePage, setActivePage] = useState<string | null>(null)
+    const [taskList, setTaskList] = useState<Tasks[]>([])
+    const [taskCount, setTaskCount] = useState<number | null>(0)
 
     useEffect(() => {
         const data = localStorage.getItem('LIST_STATE')
@@ -43,8 +58,14 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         setActivePage(null)
     }, ['', lists])
 
+    useEffect(() => {
+        setTaskCount(taskList.length - 1)
+    }, [taskList.filter])
+
     return (
-        <RemindersContext.Provider value={{ lists, activeListId, setLists, setActiveListId, activePage, setActivePage }}>
+        <RemindersContext.Provider
+        value={{ lists, activeListId, setLists, setActiveListId, activePage, setActivePage, taskList,
+                setTaskList, taskCount, setTaskCount }}>
             {children}
         </RemindersContext.Provider>
     )

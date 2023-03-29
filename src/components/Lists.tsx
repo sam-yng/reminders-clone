@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 import cross from '../assets/icons/close.png'
 import { useReminders } from "../utils/RemindersContext";
 
-const Lists = () => {
-  const { lists, setLists, activeListId, setActiveListId, activePage, setActivePage } = useReminders();
+const Lists: React.FC = () => {
+  const { lists, setLists, activeListId, setActiveListId, activePage, setActivePage, taskCount } = useReminders();
   const [name, setInput] = useState('')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +44,7 @@ const Lists = () => {
             <button onClick={() => setActivePage(item.name)} >
               <li id='name' className="m-2 font-robreg" key={item.id}>{item.name}</li>
             </button>
+            {/* {taskCount} */}
             <button onClick={() => setLists(lists.filter(list => list.id !== item.id))} >
                <img className="h-3" src={cross} />
             </button>
