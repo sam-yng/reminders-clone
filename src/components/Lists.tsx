@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect } from "react";
+import React, { Children, PureComponent, useEffect } from "react";
 import { useState } from "react";
 import "../css/index.css";
 import plus from '../assets/icons/plus.png'
@@ -7,23 +7,8 @@ import cross from '../assets/icons/close.png'
 import { useReminders } from "../utils/RemindersContext";
 
 const Lists = () => {
-  const { lists, setLists } = useReminders();
+  const { lists, setLists, activeListId, setActiveListId, activePage, setActivePage } = useReminders();
   const [name, setInput] = useState('')
-
-  useEffect(() => {
-    const data = localStorage.getItem('LIST_STATE')
-    if (data !== null) setLists(JSON.parse(data))
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      localStorage.setItem('LIST_STATE', JSON.stringify(lists))
-    })
-  }, [lists]);
-
-  // useEffect(() => {
-  //   console.log(listData)
-  // }, [listData])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value)
@@ -56,11 +41,10 @@ const Lists = () => {
       <ul className="ml-[16px] mt-2 mr-[16px]">
         {lists.map((item) => (
           <div className="flex flex-row justify-between">
-            <button>
-              <li className="m-2 font-robreg" key={item.id}>{item.name}</li>
+            <button onClick={() => setActivePage(item.name)} >
+              <li id='name' className="m-2 font-robreg" key={item.id}>{item.name}</li>
             </button>
-            <button onClick={() =>
-              setLists(lists.filter(list => list.id !== item.id))} >
+            <button onClick={() => setLists(lists.filter(list => list.id !== item.id))} >
                <img className="h-3" src={cross} />
             </button>
           </div>
