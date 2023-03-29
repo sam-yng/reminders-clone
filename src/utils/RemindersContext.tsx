@@ -14,6 +14,7 @@ export type Tasks = {
     id?: string
     name: string
     complete: false
+    // list: List
 }
 
 export type RemindersContextType = {
@@ -54,13 +55,29 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         })
     }, [lists]);
 
+
+    //
+
+
+    useEffect(() => {
+        const data = localStorage.getItem('TASK_STATE')
+        if (data !== null) setTaskList(JSON.parse(data))
+    }, [])
+
+    useEffect(() => {
+        setTimeout(() => {
+            localStorage.setItem('TASK_STATE', JSON.stringify(taskList))
+        })
+    }, [taskList]);
+
+
+    //
+
+
+
     useEffect(() => {
         setActivePage(null)
     }, ['', lists])
-
-    useEffect(() => {
-        setTaskCount(taskList.length - 1)
-    }, [taskList.filter])
 
     return (
         <RemindersContext.Provider

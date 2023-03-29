@@ -18,7 +18,8 @@ const Main: React.FC = () => {
         const newList = taskList.concat({
             id: uuidv4(),
             name,
-            complete: false
+            complete: false,
+            // list: lists[lists.length - 1]
         })
         setTaskList(newList)
         setInput('')
