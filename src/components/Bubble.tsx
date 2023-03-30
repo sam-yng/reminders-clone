@@ -10,10 +10,10 @@ type BubbleProps = {
 };
 
 const Bubble = ({ title, icon, counter = 0, color }: BubbleProps) => {
-  const { taskCount } = useReminders()
+  const { taskCount, setActivePage } = useReminders()
 
   return (
-    <div className="w-[45%] m-3 p-2 rounded-lg border-2 bg-slate-50">
+    <button onClick={() => setActivePage(title)} className="w-[45%] text-left m-3 p-2 rounded-lg border-2 bg-slate-50">
       <div className="flex flex-row justify-between">
         <img className="w-8 h-8" src={icon} />
 
@@ -21,7 +21,7 @@ const Bubble = ({ title, icon, counter = 0, color }: BubbleProps) => {
       </div>
 
       <h1 className="pt-2 text-[18px]">{title}</h1>
-    </div>
+    </button>
   );
 };
 

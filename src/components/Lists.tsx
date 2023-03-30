@@ -15,12 +15,12 @@ const Lists: React.FC = () => {
   }
 
   const handleAdd = () => {
-    const newList = lists.concat({
-      id: uuidv4(),
-      name
-    })
-    setLists(newList)
+    lists.splice(0, 0, { id: uuidv4(), name})
+    setLists(lists)
     setInput('')
+
+    console.log(activePage)
+    console.log(lists)
   }
 
   return (
@@ -44,7 +44,6 @@ const Lists: React.FC = () => {
             <button onClick={() => setActivePage(item.name)} >
               <li id='name' className="m-2 font-robreg" key={item.id}>{item.name}</li>
             </button>
-            {/* {taskCount} */}
             <button onClick={() => setLists(lists.filter(list => list.id !== item.id))} >
                <img className="h-3" src={cross} />
             </button>

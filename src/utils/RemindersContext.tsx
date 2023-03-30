@@ -5,26 +5,34 @@ export enum ListState {
     Deleted = 'deleted',
 }
 
+export type Tasks = {
+    id?: string
+    name: string
+    complete: false
+}
+
 export type List = {
     id: string;
     name: string;
 }
 
-export type Tasks = {
-    id?: string
-    name: string
-    complete: false
-    // list: List
+export type ActiveTasks = {
+    list: List
+    tasks: Array<Tasks>
 }
 
 export type RemindersContextType = {
     lists: List[];
     activeListId: string | null;
+
     setLists: (lists: List[]) => void;
     setActiveListId: (listId: string | null) => void;
 
     activePage: string | null
     setActivePage: (listName: string | null) => void
+
+    activePageTasks: ActiveTasks | null
+    setActivePageTasks: (tasks: ActiveTasks) => void
 
     taskList: Tasks[]
     setTaskList: (taskList: Tasks[]) => void
@@ -44,6 +52,8 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     const [taskList, setTaskList] = useState<Tasks[]>([])
     const [taskCount, setTaskCount] = useState<number | null>(0)
 
+    const [activePageTasks, setActivePageTasks] = useState<ActiveTasks | null>(null)
+
     useEffect(() => {
         const data = localStorage.getItem('LIST_STATE')
         if (data !== null) setLists(JSON.parse(data))
@@ -55,9 +65,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         })
     }, [lists]);
 
-
     //
-
 
     useEffect(() => {
         const data = localStorage.getItem('TASK_STATE')
@@ -70,10 +78,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         })
     }, [taskList]);
 
-
     //
-
-
 
     useEffect(() => {
         setActivePage(null)
@@ -82,7 +87,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     return (
         <RemindersContext.Provider
         value={{ lists, activeListId, setLists, setActiveListId, activePage, setActivePage, taskList,
-                setTaskList, taskCount, setTaskCount }}>
+                setTaskList, taskCount, setTaskCount, activePageTasks, setActivePageTasks }}>
             {children}
         </RemindersContext.Provider>
     )
