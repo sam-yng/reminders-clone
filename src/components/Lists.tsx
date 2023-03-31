@@ -7,8 +7,7 @@ import cross from "../assets/icons/close.png";
 import { useReminders } from "../utils/RemindersContext";
 
 const Lists: React.FC = () => {
-  const { lists, setLists, activeListId, setActiveListId, taskCount } =
-    useReminders();
+  const { lists, setLists, setActiveListId } = useReminders();
   const [name, setInput] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

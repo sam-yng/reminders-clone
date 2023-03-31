@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "../css/index.css";
-import SideNav from "./SideNav";
-import Lists from "./Lists";
 import { useReminders } from "../utils/RemindersContext";
 import check from "../assets/icons/checkmark.png";
 import { v4 as uuidv4 } from "uuid";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import flag from "../assets/icons/red-flag.png";
+import flag2 from "../assets/icons/image.png";
 
 const Main: React.FC = () => {
-  const { lists, activeListId, setLists } = useReminders();
+  const { lists, activeListId, setLists, flaggedItems, setFlaggedItems } =
+    useReminders();
   const [name, setInput] = useState("");
 
   const activeList = useMemo(() => {
@@ -20,23 +21,26 @@ const Main: React.FC = () => {
     setInput(event.target.value);
   };
 
-  const handleAdd = () => {
+  const handleAdd = (e: { code: string }) => {
     if (!activeList) {
       return;
     }
 
-    const newTaskList = activeList.tasks.concat({
-      id: uuidv4(),
-      name,
-      complete: false,
-    });
-    setLists(
-      lists.map((list) =>
-        list.id === activeListId ? { ...activeList, tasks: newTaskList } : list
-      )
-    );
-    setInput("");
-    console.log(lists);
+    if (e.code === "Enter") {
+      const newTaskList = activeList.tasks.concat({
+        id: uuidv4(),
+        name,
+        complete: false,
+      });
+      setLists(
+        lists.map((list) =>
+          list.id === activeListId
+            ? { ...activeList, tasks: newTaskList }
+            : list
+        )
+      );
+      setInput("");
+    }
   };
 
   if (!activeList) {
@@ -53,20 +57,18 @@ const Main: React.FC = () => {
       <div>
         <div className="flex flex-row mt-8">
           <input
+            onKeyDown={handleAdd}
             value={name}
             onChange={handleChange}
             type="text"
             className="pl-2 w-[50%] border-2 rounded-md border-blue-300"
             autoFocus
           ></input>
-          <button onClick={handleAdd} className="ml-4">
-            <img className="h-8" src={check} />
-          </button>
         </div>
 
         <ul>
           {activeList.tasks.map((item) => (
-            <div className="ml-6 mt-6">
+            <div className="ml-6 mt-6 w-[46%] flex flex-row">
               <li
                 onClick={() =>
                   setLists(
@@ -82,11 +84,14 @@ const Main: React.FC = () => {
                     )
                   )
                 }
-                className="cursor-pointer hover:line-through"
+                className="cursor-pointer hover:line-through text-[22px]"
                 key={item.id}
               >
                 {item.name}
               </li>
+              <button className="ml-auto">
+                <img src={flag} className="h-5" />
+              </button>
             </div>
           ))}
         </ul>

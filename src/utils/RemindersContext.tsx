@@ -14,7 +14,7 @@ export enum ListState {
 export type Tasks = {
   id: string;
   name: string;
-  complete: boolean;
+  complete?: boolean;
 };
 
 export type List = {
@@ -35,6 +35,9 @@ export type RemindersContextType = {
 
   taskCount: number | null;
   setTaskCount: (taskCount: number | null) => void;
+
+  flaggedItems: Tasks[];
+  setFlaggedItems: (flaggedItems: Tasks[]) => void;
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -48,6 +51,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeListId, setActiveListId] = useState<string | null>(null);
   const [activePage, setActivePage] = useState<string | null>(null);
   const [taskCount, setTaskCount] = useState<number | null>(0);
+  const [flaggedItems, setFlaggedItems] = useState<Tasks[]>([]);
 
   useEffect(() => {
     const data = localStorage.getItem("LIST_STATE");
@@ -77,6 +81,8 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         setActivePage,
         taskCount,
         setTaskCount,
+        flaggedItems,
+        setFlaggedItems,
       }}
     >
       {children}
