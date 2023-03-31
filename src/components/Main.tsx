@@ -36,6 +36,7 @@ const Main: React.FC = () => {
       )
     );
     setInput("");
+    console.log(lists);
   };
 
   if (!activeList) {
@@ -46,6 +47,7 @@ const Main: React.FC = () => {
     <main className="w-[65%] ml-16 mt-8">
       <article className="flex flex-row">
         <h1 className="text-[40px] font-robmedium">{activeList.name}</h1>
+        <h1 className="text-[40px] ml-auto">{activeList.tasks.length}</h1>
       </article>
 
       <div>
@@ -65,7 +67,24 @@ const Main: React.FC = () => {
         <ul>
           {activeList.tasks.map((item) => (
             <div className="ml-6 mt-6">
-              <li className="cursor-pointer hover:line-through" key={item.id}>
+              <li
+                onClick={() =>
+                  setLists(
+                    lists.map((list) =>
+                      list.id === activeListId
+                        ? {
+                            ...activeList,
+                            tasks: activeList.tasks.filter(
+                              (task) => task.id !== item.id
+                            ),
+                          }
+                        : list
+                    )
+                  )
+                }
+                className="cursor-pointer hover:line-through"
+                key={item.id}
+              >
                 {item.name}
               </li>
             </div>

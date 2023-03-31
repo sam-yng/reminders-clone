@@ -1,4 +1,10 @@
-import React, { useContext, createContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 
 export enum ListState {
   Active = "active",
@@ -6,9 +12,9 @@ export enum ListState {
 }
 
 export type Tasks = {
-  id?: string;
+  id: string;
   name: string;
-  complete: false;
+  complete: boolean;
 };
 
 export type List = {
