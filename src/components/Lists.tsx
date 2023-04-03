@@ -18,8 +18,6 @@ const Lists: React.FC = () => {
     lists.splice(0, 0, { id: uuidv4(), name, tasks: [] });
     setLists(lists);
     setInput("");
-
-    console.log(lists);
   };
 
   return (

@@ -7,14 +7,16 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import flag from "../assets/icons/red-flag.png";
 import flag2 from "../assets/icons/image.png";
+import BubbleLists from "./BubbleLists";
 
 const Main: React.FC = () => {
-  const { lists, activeListId, setLists, flaggedItems, setFlaggedItems } =
-    useReminders();
+  const { lists, activeListId, setLists, bubbleLists } = useReminders();
   const [name, setInput] = useState("");
 
+  const allLists = lists.concat(bubbleLists);
+
   const activeList = useMemo(() => {
-    return lists.find((list) => list.id === activeListId);
+    return allLists.find((list) => list.id === activeListId);
   }, [lists, activeListId]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +33,7 @@ const Main: React.FC = () => {
         id: uuidv4(),
         name,
         complete: false,
+        flagged: false,
       });
       setLists(
         lists.map((list) =>
@@ -44,7 +47,11 @@ const Main: React.FC = () => {
   };
 
   if (!activeList) {
-    return <main className="w-[65%] ml-16 mt-8"></main>;
+    return (
+      <main className="w-[65%] ml-16 mt-8">
+        <h1>hello</h1>
+      </main>
+    );
   }
 
   return (
@@ -89,8 +96,15 @@ const Main: React.FC = () => {
               >
                 {item.name}
               </li>
-              <button className="ml-auto">
-                <img src={flag} className="h-5" />
+              <button
+                onClick={() => (item.flagged = !item.flagged)}
+                className="ml-auto"
+              >
+                <img
+                  onClick={() => console.log(lists)}
+                  className="h-5"
+                  src={item.flagged === true ? check : flag}
+                />
               </button>
             </div>
           ))}
