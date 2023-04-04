@@ -6,8 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import flag from "../assets/icons/red-flag.png";
-import flag2 from "../assets/icons/image.png";
-import BubbleLists from "./BubbleLists";
+import { Tasks, List } from "../utils/RemindersContext";
 
 const Main: React.FC = () => {
   const { lists, activeListId, setLists, bubbleLists } = useReminders();
@@ -46,19 +45,34 @@ const Main: React.FC = () => {
     }
   };
 
+  let allTasks: Array<Tasks[]> = [];
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length >= 0) {
+      allTasks.splice(0, 0, lists[i].tasks);
+    }
+  }
+  let newArr = allTasks.flat();
+
+  let totalCount = 0;
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length > 0) {
+      totalCount += lists[i].tasks.length;
+    }
+  }
+
   if (!activeList) {
-    return (
-      <main className="w-[65%] ml-16 mt-8">
-        <h1>hello</h1>
-      </main>
-    );
+    return <main className="w-[65%] ml-16 mt-8"></main>;
   }
 
   return (
     <main className="w-[65%] ml-16 mt-8">
       <article className="flex flex-row">
         <h1 className="text-[40px] font-robmedium">{activeList.name}</h1>
-        <h1 className="text-[40px] ml-auto">{activeList.tasks.length}</h1>
+        {activeList.name === "All" ? (
+          <h1 className="text-[40px] ml-auto">{totalCount}</h1>
+        ) : (
+          <h1 className="text-[40px] ml-auto">{activeList.tasks.length}</h1>
+        )}
       </article>
 
       <div>
@@ -97,11 +111,13 @@ const Main: React.FC = () => {
                 {item.name}
               </li>
               <button
-                onClick={() => (item.flagged = !item.flagged)}
+                onClick={() => {
+                  item.flagged = !item.flagged;
+                  console.log(item.flagged);
+                }}
                 className="ml-auto"
               >
                 <img
-                  onClick={() => console.log(lists)}
                   className="h-5"
                   src={item.flagged === true ? check : flag}
                 />
@@ -109,6 +125,15 @@ const Main: React.FC = () => {
             </div>
           ))}
         </ul>
+        {activeList.name === "All" && (
+          <ul>
+            {newArr.map((item) => (
+              <div className="ml-6 mt-6 w-[46%] flex flex-row">
+                <li className="cursor-pointer text-[22px]">{item.name}</li>
+              </div>
+            ))}
+          </ul>
+        )}
       </div>
     </main>
   );

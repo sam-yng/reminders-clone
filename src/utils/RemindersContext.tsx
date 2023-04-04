@@ -1,4 +1,10 @@
-import React, { useContext, createContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export enum ListState {
@@ -29,9 +35,6 @@ export type RemindersContextType = {
 
   setLists: (lists: List[]) => void;
   setActiveListId: (listId: string | null) => void;
-
-  taskCount: number | null;
-  setTaskCount: (taskCount: number | null) => void;
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -43,7 +46,6 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [taskCount, setTaskCount] = useState<number | null>(0);
   const [bubbleLists, setBubbleLists] = useState<List[]>([]);
 
   useEffect(() => {
@@ -71,8 +73,6 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
         activeListId,
         setLists,
         setActiveListId,
-        taskCount,
-        setTaskCount,
         bubbleLists,
         setBubbleLists,
       }}

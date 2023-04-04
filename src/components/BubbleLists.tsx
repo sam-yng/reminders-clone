@@ -29,13 +29,13 @@ const BubbleLists: React.FC = () => {
               {item.name === "Today" && (
                 <>
                   <img className="h-8" src={calendartwo} />
-                  <h1 className="text-[22px]">{totalCount}</h1>
+                  <h1 className="text-[22px]">{0}</h1>
                 </>
               )}
               {item.name === "Scheduled" && (
                 <>
                   <img className="h-8" src={calendar} />
-                  <h1 className="text-[22px]">{totalCount}</h1>
+                  <h1 className="text-[22px]">{0}</h1>
                 </>
               )}
               {item.name === "All" && (
@@ -47,7 +47,7 @@ const BubbleLists: React.FC = () => {
               {item.name === "Flagged" && (
                 <>
                   <img className="h-8" src={flag} />
-                  <h1 className="text-[22px]">{totalCount}</h1>
+                  <h1 className="text-[22px]">{0}</h1>
                 </>
               )}
             </div>
