@@ -7,6 +7,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import flag from "../assets/icons/red-flag.png";
 import { Tasks, List } from "../utils/RemindersContext";
+import calendar from "../assets/icons/calendar.png";
 
 const Main: React.FC = () => {
   const { lists, activeListId, setLists, bubbleLists } = useReminders();
@@ -81,6 +82,8 @@ const Main: React.FC = () => {
     }
   };
 
+  const dateValue = document.querySelector('input[type="date');
+
   return (
     <main className="w-[65%] ml-16 mt-8">
       <article className="flex flex-row">
@@ -123,11 +126,21 @@ const Main: React.FC = () => {
               >
                 {item.name}
               </li>
+
+              <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
+                <img className="h-4 pl-2" src={calendar} />
+                <input
+                  className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
+                  type="text"
+                  placeholder="Add Date"
+                />
+              </button>
+
               <button
                 onClick={() => {
                   item.flagged = !item.flagged;
                 }}
-                className="ml-auto"
+                className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
               >
                 <img
                   className="h-5"
@@ -142,6 +155,26 @@ const Main: React.FC = () => {
             {newArr.map((item) => (
               <div className="ml-6 mt-6 w-[46%] flex flex-row">
                 <li className="cursor-pointer text-[22px]">{item.name}</li>
+                <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
+                  <img className="h-4 pl-2" src={calendar} />
+                  <input
+                    className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
+                    type="text"
+                    placeholder="Add Date"
+                  />
+                </button>
+
+                <button
+                  onClick={() => {
+                    item.flagged = !item.flagged;
+                  }}
+                  className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
+                >
+                  <img
+                    className="h-5"
+                    src={item.flagged === true ? check : flag}
+                  />
+                </button>
               </div>
             ))}
           </ul>
@@ -151,6 +184,26 @@ const Main: React.FC = () => {
             {flaggedArr.map((item) => (
               <div className="ml-6 mt-6 w-[46%] flex flex-row">
                 <li className="cursor-pointer text-[22px]">{item.name}</li>
+                <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
+                  <img className="h-4 pl-2" src={calendar} />
+                  <input
+                    className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
+                    type="text"
+                    placeholder="Add Date"
+                  />
+                </button>
+
+                <button
+                  onClick={() => {
+                    item.flagged = !item.flagged;
+                  }}
+                  className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
+                >
+                  <img
+                    className="h-5"
+                    src={item.flagged === true ? check : flag}
+                  />
+                </button>
               </div>
             ))}
           </ul>

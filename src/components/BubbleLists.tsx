@@ -34,7 +34,7 @@ const BubbleLists: React.FC = () => {
       {bubbleLists.map((item) => (
         <button
           onClick={() => setActiveListId(item.id)}
-          className="border-2 bg-slate-50 m-3 p-2 rounded-lg"
+          className="border-2 bg-slate-100 border-slate-100 m-3 p-2 rounded-lg"
         >
           <li key={item.id}>
             <div className="flex flex-row justify-between">
