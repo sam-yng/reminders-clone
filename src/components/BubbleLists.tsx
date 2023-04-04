@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/index.css";
-import { useReminders } from "../utils/RemindersContext";
+import { Tasks, useReminders } from "../utils/RemindersContext";
 import calendartwo from "../assets/icons/calendar-two.png";
 import calendar from "../assets/icons/calendar.png";
 import boxes from "../assets/icons/boxes.png";
@@ -16,6 +16,18 @@ const BubbleLists: React.FC = () => {
       totalCount += lists[i].tasks.length;
     }
   }
+
+  let allTasks: Array<Tasks[]> = [];
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length >= 0) {
+      allTasks.splice(0, 0, lists[i].tasks);
+    }
+  }
+  let newArr = allTasks.flat();
+
+  let flaggedArr = newArr.filter(function (item) {
+    return item.flagged === true;
+  });
 
   return (
     <ul className="grid grid-cols-2">
@@ -47,7 +59,7 @@ const BubbleLists: React.FC = () => {
               {item.name === "Flagged" && (
                 <>
                   <img className="h-8" src={flag} />
-                  <h1 className="text-[22px]">{0}</h1>
+                  <h1 className="text-[22px]">{flaggedArr.length}</h1>
                 </>
               )}
             </div>

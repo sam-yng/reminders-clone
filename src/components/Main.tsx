@@ -53,6 +53,10 @@ const Main: React.FC = () => {
   }
   let newArr = allTasks.flat();
 
+  let flaggedArr = newArr.filter(function (item) {
+    return item.flagged === true;
+  });
+
   let totalCount = 0;
   for (let i = 0; i < lists.length; i++) {
     if (lists[i].tasks.length > 0) {
@@ -64,15 +68,24 @@ const Main: React.FC = () => {
     return <main className="w-[65%] ml-16 mt-8"></main>;
   }
 
+  const count = () => {
+    if (activeList.name === "All") {
+      let num = totalCount;
+      return num;
+    } else if (activeList.name === "Flagged") {
+      let num = flaggedArr.length;
+      return num;
+    } else {
+      let num = activeList.tasks.length;
+      return num;
+    }
+  };
+
   return (
     <main className="w-[65%] ml-16 mt-8">
       <article className="flex flex-row">
         <h1 className="text-[40px] font-robmedium">{activeList.name}</h1>
-        {activeList.name === "All" ? (
-          <h1 className="text-[40px] ml-auto">{totalCount}</h1>
-        ) : (
-          <h1 className="text-[40px] ml-auto">{activeList.tasks.length}</h1>
-        )}
+        <h1 className="text-[40px] ml-auto">{count()}</h1>
       </article>
 
       <div>
@@ -113,7 +126,6 @@ const Main: React.FC = () => {
               <button
                 onClick={() => {
                   item.flagged = !item.flagged;
-                  console.log(item.flagged);
                 }}
                 className="ml-auto"
               >
@@ -128,6 +140,15 @@ const Main: React.FC = () => {
         {activeList.name === "All" && (
           <ul>
             {newArr.map((item) => (
+              <div className="ml-6 mt-6 w-[46%] flex flex-row">
+                <li className="cursor-pointer text-[22px]">{item.name}</li>
+              </div>
+            ))}
+          </ul>
+        )}
+        {activeList.name === "Flagged" && (
+          <ul>
+            {flaggedArr.map((item) => (
               <div className="ml-6 mt-6 w-[46%] flex flex-row">
                 <li className="cursor-pointer text-[22px]">{item.name}</li>
               </div>
