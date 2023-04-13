@@ -8,10 +8,17 @@ import "react-calendar/dist/Calendar.css";
 import flag from "../assets/icons/red-flag.png";
 import { Tasks, List } from "../utils/RemindersContext";
 import calendar from "../assets/icons/calendar.png";
+import arrow from "../assets/icons/right-arrow.png";
 
 const Main: React.FC = () => {
-  const { lists, activeListId, setLists, bubbleLists, setBubbleLists } =
-    useReminders();
+  const {
+    lists,
+    activeListId,
+    setActiveListId,
+    setLists,
+    bubbleLists,
+    setBubbleLists,
+  } = useReminders();
   const [name, setInput] = useState("");
 
   const allLists = lists.concat(bubbleLists);
@@ -93,27 +100,34 @@ const Main: React.FC = () => {
   };
 
   return (
-    <main className="md:w-[65%] md:ml-16 md:mt-8">
-      <article className="flex flex-row">
-        <h1 className="md:text-[40px] font-robmedium">{activeList.name}</h1>
-        <h1 className="md:text-[40px] ml-auto">{count()}</h1>
+    <main className="md:w-[65%] w-[80%] m-auto md:ml-16 md:mt-8">
+      <img
+        src={arrow}
+        onClick={() => setActiveListId(null)}
+        className="md:hidden block h-6 rotate-180 mt-4"
+      />
+      <article className="flex flex-row mt-4">
+        <h1 className="md:text-[40px] text-[25px] font-robmedium mb-4">
+          {activeList.name}
+        </h1>
+        <h1 className="md:text-[40px] text-[20px] ml-auto">{count()}</h1>
       </article>
 
       <div>
-        <div className="flex flex-row mt-8">
+        <div className="flex flex-row md:mt-8">
           <input
             onKeyDown={handleAdd}
             value={name}
             onChange={handleChange}
             type="text"
-            className="pl-2 w-[50%] border-2 rounded-md border-blue-300"
+            className="md:pl-2 mb-2 md:w-[50%] w-full border-2 rounded-md border-blue-300"
             autoFocus
           ></input>
         </div>
 
         <ul>
           {activeList.tasks.map((item) => (
-            <div className="ml-6 mt-6 w-[46%] flex flex-row">
+            <div className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
               <li
                 onClick={() =>
                   setLists(
@@ -129,7 +143,7 @@ const Main: React.FC = () => {
                     )
                   )
                 }
-                className="cursor-pointer hover:line-through text-[22px]"
+                className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
                 key={item.id}
               >
                 {item.name}

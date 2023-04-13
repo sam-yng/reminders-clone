@@ -10,7 +10,22 @@ const SideNav: React.FC = () => {
   const { lists, setLists, activeListId } = useReminders();
 
   if (activeListId !== null) {
-    return <Main />;
+    return (
+      <>
+        <nav className="md:hidden">
+          <Main />
+        </nav>
+        <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-[94%] mb-4 md:mb-0 flex m-auto pl-4 border-2 rounded-md"
+          />
+          <BubbleLists />
+          <Lists />
+        </nav>
+      </>
+    );
   }
 
   return (
@@ -18,7 +33,7 @@ const SideNav: React.FC = () => {
       <input
         type="text"
         placeholder="Search"
-        className="w-[94%] flex m-auto pl-4 border-2 rounded-md"
+        className="w-[94%] mb-4 md:mb-0 flex m-auto pl-4 border-2 rounded-md"
       />
       <BubbleLists />
       <Lists />
