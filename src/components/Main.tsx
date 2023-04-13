@@ -10,7 +10,8 @@ import { Tasks, List } from "../utils/RemindersContext";
 import calendar from "../assets/icons/calendar.png";
 
 const Main: React.FC = () => {
-  const { lists, activeListId, setLists, bubbleLists } = useReminders();
+  const { lists, activeListId, setLists, bubbleLists, setBubbleLists } =
+    useReminders();
   const [name, setInput] = useState("");
 
   const allLists = lists.concat(bubbleLists);
@@ -18,6 +19,15 @@ const Main: React.FC = () => {
   const activeList = useMemo(() => {
     return allLists.find((list) => list.id === activeListId);
   }, [lists, activeListId]);
+
+  useEffect(() => {
+    setBubbleLists([
+      { id: uuidv4(), name: "Today", tasks: [] },
+      { id: uuidv4(), name: "Scheduled", tasks: [] },
+      { id: uuidv4(), name: "All", tasks: newArr },
+      { id: uuidv4(), name: "Flagged", tasks: flaggedArr },
+    ]);
+  }, [lists]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -83,10 +93,10 @@ const Main: React.FC = () => {
   };
 
   return (
-    <main className="w-[65%] ml-16 mt-8">
+    <main className="md:w-[65%] md:ml-16 md:mt-8">
       <article className="flex flex-row">
-        <h1 className="text-[40px] font-robmedium">{activeList.name}</h1>
-        <h1 className="text-[40px] ml-auto">{count()}</h1>
+        <h1 className="md:text-[40px] font-robmedium">{activeList.name}</h1>
+        <h1 className="md:text-[40px] ml-auto">{count()}</h1>
       </article>
 
       <div>
@@ -124,7 +134,6 @@ const Main: React.FC = () => {
               >
                 {item.name}
               </li>
-
               <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
                 <img className="h-4 pl-2" src={calendar} />
                 <input
@@ -165,96 +174,6 @@ const Main: React.FC = () => {
             </div>
           ))}
         </ul>
-        {activeList.name === "All" && (
-          <ul>
-            {newArr.map((item) => (
-              <div className="ml-6 mt-6 w-[46%] flex flex-row">
-                <li className="cursor-pointer text-[22px]">{item.name}</li>
-                <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
-                  <img className="h-4 pl-2" src={calendar} />
-                  <input
-                    className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
-                    type="text"
-                    placeholder="Add Date"
-                  />
-                </button>
-
-                <button
-                  onClick={() =>
-                    setLists(
-                      lists.map((list) =>
-                        list.id === activeListId
-                          ? {
-                              ...activeList,
-                              tasks: activeList.tasks.map((task) =>
-                                task.id === item.id
-                                  ? {
-                                      ...item,
-                                      flagged: !item.flagged,
-                                    }
-                                  : task
-                              ),
-                            }
-                          : list
-                      )
-                    )
-                  }
-                  className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
-                >
-                  <img
-                    className="h-5"
-                    src={item.flagged === true ? check : flag}
-                  />
-                </button>
-              </div>
-            ))}
-          </ul>
-        )}
-        {activeList.name === "Flagged" && (
-          <ul>
-            {flaggedArr.map((item) => (
-              <div className="ml-6 mt-6 w-[46%] flex flex-row">
-                <li className="cursor-pointer text-[22px]">{item.name}</li>
-                <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
-                  <img className="h-4 pl-2" src={calendar} />
-                  <input
-                    className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
-                    type="text"
-                    placeholder="Add Date"
-                  />
-                </button>
-
-                <button
-                  onClick={() =>
-                    setLists(
-                      lists.map((list) =>
-                        list.id === activeListId
-                          ? {
-                              ...activeList,
-                              tasks: activeList.tasks.map((task) =>
-                                task.id === item.id
-                                  ? {
-                                      ...item,
-                                      flagged: !item.flagged,
-                                    }
-                                  : task
-                              ),
-                            }
-                          : list
-                      )
-                    )
-                  }
-                  className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
-                >
-                  <img
-                    className="h-5"
-                    src={item.flagged === true ? check : flag}
-                  />
-                </button>
-              </div>
-            ))}
-          </ul>
-        )}
       </div>
     </main>
   );
