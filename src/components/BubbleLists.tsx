@@ -1,14 +1,13 @@
-import React from "react";
-import "../css/index.css";
-import { Tasks, useReminders } from "../utils/RemindersContext";
-import calendartwo from "../assets/icons/calendar-two.png";
-import calendar from "../assets/icons/calendar.png";
-import boxes from "../assets/icons/boxes.png";
-import flag from "../assets/icons/red-flag.png";
+import React from 'react';
+import '../css/index.css';
+import { Tasks, useReminders } from '../utils/RemindersContext';
+import calendartwo from '../assets/icons/calendar-two.png';
+import calendar from '../assets/icons/calendar.png';
+import boxes from '../assets/icons/boxes.png';
+import flag from '../assets/icons/red-flag.png';
 
 const BubbleLists: React.FC = () => {
-  const { setActiveListId, lists, setLists, bubbleLists, setBubbleLists } =
-    useReminders();
+  const { setActiveListId, lists, bubbleLists } = useReminders();
 
   let totalCount = 0;
   for (let i = 0; i < lists.length; i++) {
@@ -17,48 +16,48 @@ const BubbleLists: React.FC = () => {
     }
   }
 
-  let allTasks: Array<Tasks[]> = [];
+  const allTasks: Array<Tasks[]> = [];
   for (let i = 0; i < lists.length; i++) {
     if (lists[i].tasks.length >= 0) {
       allTasks.splice(0, 0, lists[i].tasks);
     }
   }
-  let newArr = allTasks.flat();
+  const newArr = allTasks.flat();
 
-  let flaggedArr = newArr.filter(function (item) {
-    return item.flagged === true;
-  });
+  const flaggedArr = newArr.filter((item) => item.flagged === true);
 
   return (
     <ul className="grid grid-cols-2">
       {bubbleLists.map((item) => (
         <button
+          type="button"
           onClick={() => setActiveListId(item.id)}
           className="border-2 bg-slate-100 border-slate-100 m-3 p-2 rounded-lg"
+          key={item.id}
         >
-          <li key={item.id}>
+          <li>
             <div className="flex flex-row justify-between">
-              {item.name === "Today" && (
+              {item.name === 'Today' && (
                 <>
-                  <img className="h-8" src={calendartwo} />
+                  <img alt="icon" className="h-8" src={calendartwo} />
                   <h1 className="text-[22px]">{0}</h1>
                 </>
               )}
-              {item.name === "Scheduled" && (
+              {item.name === 'Scheduled' && (
                 <>
-                  <img className="h-8" src={calendar} />
+                  <img alt="icon" className="h-8" src={calendar} />
                   <h1 className="text-[22px]">{0}</h1>
                 </>
               )}
-              {item.name === "All" && (
+              {item.name === 'All' && (
                 <>
-                  <img className="h-8" src={boxes} />
+                  <img alt="icon" className="h-8" src={boxes} />
                   <h1 className="text-[22px]">{totalCount}</h1>
                 </>
               )}
-              {item.name === "Flagged" && (
+              {item.name === 'Flagged' && (
                 <>
-                  <img className="h-8" src={flag} />
+                  <img alt="icon" className="h-8" src={flag} />
                   <h1 className="text-[22px]">{flaggedArr.length}</h1>
                 </>
               )}

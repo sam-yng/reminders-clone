@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import "../css/index.css";
-import { useReminders } from "../utils/RemindersContext";
-import check from "../assets/icons/checkmark.png";
-import { v4 as uuidv4 } from "uuid";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import flag from "../assets/icons/red-flag.png";
-import { Tasks, List } from "../utils/RemindersContext";
-import calendar from "../assets/icons/calendar.png";
-import arrow from "../assets/icons/right-arrow.png";
+import React, { useEffect, useMemo, useState } from 'react';
+import '../css/index.css';
+import { v4 as uuidv4 } from 'uuid';
+import { useReminders, Tasks } from '../utils/RemindersContext';
+import check from '../assets/icons/checkmark.png';
+import 'react-calendar/dist/Calendar.css';
+import flag from '../assets/icons/red-flag.png';
+import calendar from '../assets/icons/calendar.png';
+import arrow from '../assets/icons/right-arrow.png';
 
-const Main: React.FC = () => {
+const Main = () => {
   const {
     lists,
     activeListId,
@@ -19,22 +17,14 @@ const Main: React.FC = () => {
     bubbleLists,
     setBubbleLists,
   } = useReminders();
-  const [name, setInput] = useState("");
+  const [name, setInput] = useState('');
 
   const allLists = lists.concat(bubbleLists);
 
-  const activeList = useMemo(() => {
-    return allLists.find((list) => list.id === activeListId);
-  }, [lists, activeListId]);
-
-  useEffect(() => {
-    setBubbleLists([
-      { id: uuidv4(), name: "Today", tasks: [] },
-      { id: uuidv4(), name: "Scheduled", tasks: [] },
-      { id: uuidv4(), name: "All", tasks: newArr },
-      { id: uuidv4(), name: "Flagged", tasks: flaggedArr },
-    ]);
-  }, [lists]);
+  const activeList = useMemo(
+    () => allLists.find(list => list.id === activeListId),
+    [allLists, activeListId]
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -45,7 +35,7 @@ const Main: React.FC = () => {
       return;
     }
 
-    if (e.code === "Enter") {
+    if (e.code === 'Enter') {
       const newTaskList = activeList.tasks.concat({
         id: uuidv4(),
         name,
@@ -53,27 +43,39 @@ const Main: React.FC = () => {
         flagged: false,
       });
       setLists(
-        lists.map((list) =>
+        lists.map(list =>
           list.id === activeListId
             ? { ...activeList, tasks: newTaskList }
-            : list
-        )
+            : list)
       );
-      setInput("");
+      setInput('');
     }
   };
 
-  let allTasks: Array<Tasks[]> = [];
+  const handleBack = (e: { code: string }) => {
+    if (e.code === 'Escape') {
+      setActiveListId(null);
+    }
+  };
+
+  const allTasks: Array<Tasks[]> = [];
   for (let i = 0; i < lists.length; i++) {
     if (lists[i].tasks.length >= 0) {
       allTasks.splice(0, 0, lists[i].tasks);
     }
   }
-  let newArr = allTasks.flat();
+  const newArr = allTasks.flat();
 
-  let flaggedArr = newArr.filter(function (item) {
-    return item.flagged === true;
-  });
+  const flaggedArr = newArr.filter(item => item.flagged === true);
+
+  useEffect(() => {
+    setBubbleLists([
+      { id: uuidv4(), name: 'Today', tasks: [] },
+      { id: uuidv4(), name: 'Scheduled', tasks: [] },
+      { id: uuidv4(), name: 'All', tasks: newArr },
+      { id: uuidv4(), name: 'Flagged', tasks: flaggedArr },
+    ]);
+  }, [flaggedArr, lists, newArr, setBubbleLists]);
 
   let totalCount = 0;
   for (let i = 0; i < lists.length; i++) {
@@ -83,18 +85,18 @@ const Main: React.FC = () => {
   }
 
   if (!activeList) {
-    return <main className="w-[65%] ml-16 mt-8"></main>;
+    return <main className="w-[65%] ml-16 mt-8" />;
   }
 
   const count = () => {
-    if (activeList.name === "All") {
-      let num = totalCount;
+    if (activeList.name === 'All') {
+      const num = totalCount;
       return num;
-    } else if (activeList.name === "Flagged") {
-      let num = flaggedArr.length;
+    } else if (activeList.name === 'Flagged') {
+      const num = flaggedArr.length;
       return num;
     } else {
-      let num = activeList.tasks.length;
+      const num = activeList.tasks.length;
       return num;
     }
   };
@@ -102,8 +104,10 @@ const Main: React.FC = () => {
   return (
     <main className="md:w-[65%] w-[80%] m-auto md:ml-16 md:mt-8">
       <img
+        alt="arrow"
         src={arrow}
         onClick={() => setActiveListId(null)}
+        onKeyDown={handleBack}
         className="md:hidden block h-6 rotate-180 mt-4"
       />
       <article className="flex flex-row mt-4">
@@ -121,35 +125,31 @@ const Main: React.FC = () => {
             onChange={handleChange}
             type="text"
             className="md:pl-2 mb-2 md:w-[50%] w-full border-2 rounded-md border-blue-300"
-            autoFocus
-          ></input>
+          />
         </div>
 
         <ul>
-          {activeList.tasks.map((item) => (
-            <div className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
+          {activeList.tasks.map(item => (
+            <div key={item.id} className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
               <li
                 onClick={() =>
                   setLists(
-                    lists.map((list) =>
+                    lists.map(list =>
                       list.id === activeListId
                         ? {
-                            ...activeList,
-                            tasks: activeList.tasks.filter(
-                              (task) => task.id !== item.id
-                            ),
-                          }
-                        : list
-                    )
-                  )
-                }
+                          ...activeList,
+                          tasks: activeList.tasks.filter(
+                            task => task.id !== item.id
+                          ),
+                        }
+                        : list)
+                  )}
                 className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
-                key={item.id}
               >
                 {item.name}
               </li>
-              <button className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
-                <img className="h-4 pl-2" src={calendar} />
+              <button type="button" className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
+                <img alt="icon" className="h-4 pl-2" src={calendar} />
                 <input
                   name="date"
                   className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
@@ -159,28 +159,27 @@ const Main: React.FC = () => {
               </button>
 
               <button
+                type="button"
                 onClick={() =>
                   setLists(
-                    lists.map((list) =>
+                    lists.map(list =>
                       list.id === activeListId
                         ? {
-                            ...activeList,
-                            tasks: activeList.tasks.map((task) =>
-                              task.id === item.id
-                                ? {
-                                    ...item,
-                                    flagged: !item.flagged,
-                                  }
-                                : task
-                            ),
-                          }
-                        : list
-                    )
-                  )
-                }
+                          ...activeList,
+                          tasks: activeList.tasks.map(task =>
+                            task.id === item.id
+                              ? {
+                                ...item,
+                                flagged: !item.flagged,
+                              }
+                              : task),
+                        }
+                        : list)
+                  )}
                 className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
               >
                 <img
+                  alt="flag"
                   className="h-5"
                   src={item.flagged === true ? check : flag}
                 />

@@ -1,20 +1,19 @@
-import "../css/index.css";
-import SideNav from "../components/SideNav";
-import Main from "../components/Main";
-import { RemindersProvider, useReminders } from "../utils/RemindersContext";
+import React from 'react';
+import '../css/index.css';
+import SideNav from '../components/SideNav';
+import Main from '../components/Main';
+import { RemindersProvider } from '../utils/RemindersContext';
 
-const App = () => {
-  return (
-    <RemindersProvider>
-      <main className="hidden md:flex h-[100vh] md:flex-row">
-        <SideNav />
-        <Main />
-      </main>
-      <main className="md:hidden h-[100vh]">
-        <SideNav />
-      </main>
-    </RemindersProvider>
-  );
-};
+const App = () => (
+  <RemindersProvider>
+    <main className="hidden md:flex h-[100vh] md:flex-row">
+      <SideNav />
+      <Main />
+    </main>
+    <main className="md:hidden h-[100vh]">
+      <SideNav />
+    </main>
+  </RemindersProvider>
+);
 
 export default App;

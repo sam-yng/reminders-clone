@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import "../css/index.css";
-import Lists from "./Lists";
-import { useReminders } from "../utils/RemindersContext";
-import { v4 as uuidv4 } from "uuid";
-import BubbleLists from "./BubbleLists";
-import Main from "./Main";
+import React from 'react';
+import '../css/index.css';
+import Lists from './Lists';
+import { useReminders } from '../utils/RemindersContext';
+import BubbleLists from './BubbleLists';
+import Main from './Main';
 
-const SideNav: React.FC = () => {
-  const { lists, setLists, activeListId } = useReminders();
+const SideNav = () => {
+  const { activeListId } = useReminders();
 
   if (activeListId !== null) {
     return (

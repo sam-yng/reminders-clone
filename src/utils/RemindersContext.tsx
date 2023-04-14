@@ -4,12 +4,12 @@ import React, {
   useState,
   useEffect,
   useMemo,
-} from "react";
-import { v4 as uuidv4 } from "uuid";
+} from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum ListState {
-  Active = "active",
-  Deleted = "deleted",
+  Active = 'active',
+  Deleted = 'deleted',
 }
 
 export type Tasks = {
@@ -49,33 +49,34 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   const [bubbleLists, setBubbleLists] = useState<List[]>([]);
 
   useEffect(() => {
-    const data = localStorage.getItem("LIST_STATE");
+    const data = localStorage.getItem('LIST_STATE');
     if (data !== null) setLists(JSON.parse(data));
     setBubbleLists([
-      { id: uuidv4(), name: "Today", tasks: [] },
-      { id: uuidv4(), name: "Scheduled", tasks: [] },
-      { id: uuidv4(), name: "All", tasks: [] },
-      { id: uuidv4(), name: "Flagged", tasks: [] },
+      { id: uuidv4(), name: 'Today', tasks: [] },
+      { id: uuidv4(), name: 'Scheduled', tasks: [] },
+      { id: uuidv4(), name: 'All', tasks: [] },
+      { id: uuidv4(), name: 'Flagged', tasks: [] },
     ]);
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem("LIST_STATE", JSON.stringify(lists));
+      localStorage.setItem('LIST_STATE', JSON.stringify(lists));
     });
   }, [lists]);
 
-  //
+  const value = useMemo(() => ({
+    lists,
+    activeListId,
+    setLists,
+    setActiveListId,
+    bubbleLists,
+    setBubbleLists,
+  }), [activeListId, bubbleLists, lists]);
+
   return (
     <RemindersContext.Provider
-      value={{
-        lists,
-        activeListId,
-        setLists,
-        setActiveListId,
-        bubbleLists,
-        setBubbleLists,
-      }}
+      value={value}
     >
       {children}
     </RemindersContext.Provider>
@@ -86,7 +87,7 @@ export const useReminders = (): RemindersContextType => {
   const value = useContext(RemindersContext);
   if (!value) {
     throw new Error(
-      "useReminders can only be called from within a RemindersProvider"
+      'useReminders can only be called from within a RemindersProvider'
     );
   }
   return value;
