@@ -21,10 +21,30 @@ const Main = () => {
 
   const allLists = lists.concat(bubbleLists);
 
+  const allTasks: Array<Tasks[]> = [];
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length >= 0) {
+      allTasks.splice(0, 0, lists[i].tasks);
+    }
+  }
+  const newArr = allTasks.flat();
+
+  const flaggedArr = newArr.filter(item => item.flagged === true);
+
   const activeList = useMemo(
     () => allLists.find(list => list.id === activeListId),
     [allLists, activeListId]
   );
+
+  useEffect(() => {
+    setBubbleLists([
+      { id: uuidv4(), name: 'Today', tasks: [] },
+      { id: uuidv4(), name: 'Scheduled', tasks: [] },
+      { id: uuidv4(), name: 'All', tasks: newArr },
+      { id: uuidv4(), name: 'Flagged', tasks: flaggedArr },
+    ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lists]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -57,25 +77,6 @@ const Main = () => {
       setActiveListId(null);
     }
   };
-
-  const allTasks: Array<Tasks[]> = [];
-  for (let i = 0; i < lists.length; i++) {
-    if (lists[i].tasks.length >= 0) {
-      allTasks.splice(0, 0, lists[i].tasks);
-    }
-  }
-  const newArr = allTasks.flat();
-
-  const flaggedArr = newArr.filter(item => item.flagged === true);
-
-  useEffect(() => {
-    setBubbleLists([
-      { id: uuidv4(), name: 'Today', tasks: [] },
-      { id: uuidv4(), name: 'Scheduled', tasks: [] },
-      { id: uuidv4(), name: 'All', tasks: newArr },
-      { id: uuidv4(), name: 'Flagged', tasks: flaggedArr },
-    ]);
-  }, [flaggedArr, lists, newArr, setBubbleLists]);
 
   let totalCount = 0;
   for (let i = 0; i < lists.length; i++) {
