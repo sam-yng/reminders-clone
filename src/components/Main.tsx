@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import '../css/index.css';
 import { useReminders, Tasks } from '../utils/RemindersContext';
 import check from '../assets/icons/checkmark.png';
@@ -14,10 +14,8 @@ const Main = () => {
     activeListId,
     setActiveListId,
     setLists,
-    bubbleLists,
+    activeList,
   } = useReminders();
-
-  const allLists = lists.concat(bubbleLists);
 
   const allTasks: Array<Tasks[]> = [];
   for (let i = 0; i < lists.length; i++) {
@@ -26,13 +24,7 @@ const Main = () => {
     }
   }
   const newArr = allTasks.flat();
-
   const flaggedArr = newArr.filter(item => item.flagged === true);
-
-  const activeList = useMemo(
-    () => allLists.find(list => list.id === activeListId),
-    [allLists, activeListId]
-  );
 
   const handleBack = (e: { code: string }) => {
     if (e.code === 'Escape') {
@@ -99,7 +91,7 @@ const Main = () => {
                   )}
                 className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
               >
-                {item.name}
+                {item.input}
               </li>
               <button type="button" className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
                 <img alt="icon" className="h-4 pl-2" src={calendar} />

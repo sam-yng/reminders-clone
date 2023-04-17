@@ -13,7 +13,7 @@ export enum ListState {
 
 export type Tasks = {
   id: string;
-  name: string;
+  input: string;
   complete?: boolean;
   flagged: boolean;
   date?: string;
@@ -23,17 +23,22 @@ export type List = {
   id: string;
   name: string;
   tasks: Array<Tasks>;
+  icon?: string
 };
 
 export type RemindersContextType = {
   lists: List[];
   activeListId: string | null;
 
-  bubbleLists: List[];
-  setBubbleLists: (lists: List[]) => void;
-
   setLists: (lists: List[]) => void;
   setActiveListId: (listId: string | null) => void;
+
+  name: string;
+  setName: (name: string) => void
+  input: string;
+  setInput: (input: string) => void
+  activeList: List | undefined
+  totalCount: number
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -45,7 +50,20 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [bubbleLists, setBubbleLists] = useState<List[]>([]);
+  const [name, setName] = useState<string>('');
+  const [input, setInput] = useState<string>('');
+
+  const activeList = useMemo(
+    () => lists.find(list => list.id === activeListId),
+    [lists, activeListId]
+  );
+
+  let totalCount = 0;
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length > 0) {
+      totalCount += lists[i].tasks.length;
+    }
+  }
 
   useEffect(() => {
     const data = localStorage.getItem('LIST_STATE');
@@ -63,9 +81,13 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     activeListId,
     setLists,
     setActiveListId,
-    bubbleLists,
-    setBubbleLists,
-  }), [activeListId, bubbleLists, lists]);
+    name,
+    setName,
+    input,
+    setInput,
+    activeList,
+    totalCount,
+  }), [activeList, activeListId, input, lists, name, totalCount]);
 
   return (
     <RemindersContext.Provider
