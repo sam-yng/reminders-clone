@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 export enum ListState {
   Active = 'active',
@@ -51,12 +50,6 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const data = localStorage.getItem('LIST_STATE');
     if (data !== null) setLists(JSON.parse(data));
-    setBubbleLists([
-      { id: uuidv4(), name: 'Today', tasks: [] },
-      { id: uuidv4(), name: 'Scheduled', tasks: [] },
-      { id: uuidv4(), name: 'All', tasks: [] },
-      { id: uuidv4(), name: 'Flagged', tasks: [] },
-    ]);
   }, []);
 
   useEffect(() => {

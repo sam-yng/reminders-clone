@@ -5,7 +5,7 @@ import plus from '../assets/icons/plus.png';
 import cross from '../assets/icons/close.png';
 import { useReminders } from '../utils/RemindersContext';
 
-function Lists() {
+const Lists = () => {
   const {
     lists, setLists, setActiveListId
   } = useReminders();
@@ -56,6 +56,6 @@ function Lists() {
       </ul>
     </>
   );
-}
+};
 
 export default Lists;
