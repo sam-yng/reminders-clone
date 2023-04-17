@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import '../css/index.css';
-import { v4 as uuidv4 } from 'uuid';
 import { useReminders, Tasks } from '../utils/RemindersContext';
 import check from '../assets/icons/checkmark.png';
 import 'react-calendar/dist/Calendar.css';
 import flag from '../assets/icons/red-flag.png';
 import calendar from '../assets/icons/calendar.png';
 import arrow from '../assets/icons/right-arrow.png';
+import Input from './Input';
 
 const Main = () => {
   const {
@@ -15,9 +15,7 @@ const Main = () => {
     setActiveListId,
     setLists,
     bubbleLists,
-    setBubbleLists,
   } = useReminders();
-  const [name, setInput] = useState('');
 
   const allLists = lists.concat(bubbleLists);
 
@@ -35,42 +33,6 @@ const Main = () => {
     () => allLists.find(list => list.id === activeListId),
     [allLists, activeListId]
   );
-
-  useEffect(() => {
-    setBubbleLists([
-      { id: uuidv4(), name: 'Today', tasks: [] },
-      { id: uuidv4(), name: 'Scheduled', tasks: [] },
-      { id: uuidv4(), name: 'All', tasks: newArr },
-      { id: uuidv4(), name: 'Flagged', tasks: flaggedArr },
-    ]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lists]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-  };
-
-  const handleAdd = (e: { code: string }) => {
-    if (!activeList) {
-      return;
-    }
-
-    if (e.code === 'Enter') {
-      const newTaskList = activeList.tasks.concat({
-        id: uuidv4(),
-        name,
-        complete: false,
-        flagged: false,
-      });
-      setLists(
-        lists.map(list =>
-          list.id === activeListId
-            ? { ...activeList, tasks: newTaskList }
-            : list)
-      );
-      setInput('');
-    }
-  };
 
   const handleBack = (e: { code: string }) => {
     if (e.code === 'Escape') {
@@ -117,18 +79,8 @@ const Main = () => {
         </h1>
         <h1 className="md:text-[40px] text-[20px] ml-auto">{count()}</h1>
       </article>
-
+      <Input placeholder="" />
       <div>
-        <div className="flex flex-row md:mt-8">
-          <input
-            onKeyDown={handleAdd}
-            value={name}
-            onChange={handleChange}
-            type="text"
-            className="md:pl-2 mb-2 md:w-[50%] w-full border-2 rounded-md border-blue-300"
-          />
-        </div>
-
         <ul>
           {activeList.tasks.map(item => (
             <div key={item.id} className="md:ml-6 mt-6 md:w-[46%] flex flex-row">

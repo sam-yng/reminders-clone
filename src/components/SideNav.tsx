@@ -9,6 +9,7 @@ import calendartwo from '../assets/icons/calendar-two.png';
 import calendar from '../assets/icons/calendar.png';
 import boxes from '../assets/icons/boxes.png';
 import flag from '../assets/icons/red-flag.png';
+import Input from './Input';
 
 const SideNav = () => {
   const { activeListId, lists } = useReminders();
@@ -37,17 +38,14 @@ const SideNav = () => {
           <Main />
         </nav>
         <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-[94%] mb-4 md:mb-0 flex m-auto pl-4 border-2 rounded-md"
-          />
+          <Input placeholder="Search" />
           <ul>
             <Bubble title="Today" icon={calendartwo} counter={0} id={uuidv4()} />
             <Bubble title="Scheduled" icon={calendar} counter={0} id={uuidv4()} />
             <Bubble title="All" icon={boxes} counter={totalCount} id={uuidv4()} />
             <Bubble title="Flagged" icon={flag} counter={flaggedArr.length} id={uuidv4()} />
           </ul>
+          <Input placeholder="Add List" />
           <Lists />
         </nav>
       </>
@@ -56,17 +54,14 @@ const SideNav = () => {
 
   return (
     <nav className="md:w-[25%] m-6 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
-      <input
-        type="text"
-        placeholder="Search"
-        className="w-[94%] mb-4 md:mb-0 flex m-auto pl-4 border-2 rounded-md"
-      />
+      <Input placeholder="Search" />
       <ul className="grid grid-cols-2">
         <Bubble title="Today" icon={calendartwo} counter={0} id={uuidv4()} />
         <Bubble title="Scheduled" icon={calendar} counter={0} id={uuidv4()} />
         <Bubble title="All" icon={boxes} counter={totalCount} id={uuidv4()} />
         <Bubble title="Flagged" icon={flag} counter={flaggedArr.length} id={uuidv4()} />
       </ul>
+      <Input placeholder="Add List" />
       <Lists />
     </nav>
   );
