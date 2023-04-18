@@ -1,19 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../css/index.css';
 import { useReminders, Tasks } from '../utils/RemindersContext';
-import check from '../assets/icons/checkmark.png';
 import 'react-calendar/dist/Calendar.css';
-import flag from '../assets/icons/red-flag.png';
-import calendar from '../assets/icons/calendar.png';
 import arrow from '../assets/icons/right-arrow.png';
 import Input from './Input';
+import Task from './Task';
 
 const Main = () => {
   const {
     lists,
-    activeListId,
     setActiveListId,
-    setLists,
     activeList,
   } = useReminders();
 
@@ -75,61 +71,7 @@ const Main = () => {
       <div>
         <ul>
           {activeList.tasks.map(item => (
-            <div key={item.id} className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
-              <li
-                onClick={() =>
-                  setLists(
-                    lists.map(list =>
-                      list.id === activeListId
-                        ? {
-                          ...activeList,
-                          tasks: activeList.tasks.filter(
-                            task => task.id !== item.id
-                          ),
-                        }
-                        : list)
-                  )}
-                className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
-              >
-                {item.input}
-              </li>
-              <button type="button" className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
-                <img alt="icon" className="h-4 pl-2" src={calendar} />
-                <input
-                  name="date"
-                  className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
-                  type="text"
-                  placeholder="Add Date"
-                />
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setLists(
-                    lists.map(list =>
-                      list.id === activeListId
-                        ? {
-                          ...activeList,
-                          tasks: activeList.tasks.map(task =>
-                            task.id === item.id
-                              ? {
-                                ...item,
-                                flagged: !item.flagged,
-                              }
-                              : task),
-                        }
-                        : list)
-                  )}
-                className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
-              >
-                <img
-                  alt="flag"
-                  className="h-5"
-                  src={item.flagged === true ? check : flag}
-                />
-              </button>
-            </div>
+            <Task key={item.id} id={item.id} input={item.input} flagged={item.flagged} />
           ))}
         </ul>
       </div>

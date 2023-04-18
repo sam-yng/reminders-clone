@@ -3,7 +3,7 @@ import '../css/index.css'
 import cross from '../assets/icons/close.png';
 import { useReminders, List } from '../utils/RemindersContext';
 
-const TaskList = ({ id, name, tasks }: List) => {
+const TaskList = ({ id, name }: List) => {
   const {
     lists, setLists, setActiveListId
   } = useReminders();

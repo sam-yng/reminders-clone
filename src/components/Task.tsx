@@ -1,23 +1,37 @@
 import React from "react";
 import '../css/index.css'
 import { Tasks, useReminders } from '../utils/RemindersContext'
-import calendar from '../assets/calendar-two.png'
-import check from '../assets/checkmark.png'
-import flag from '../assets/image.png'
+import calendar from '../assets/icons/calendar-two.png'
+import check from '../assets/icons/checkmark.png'
+import flag from '../assets/icons/image.png'
 
 const Task = ({ id, input, flagged }: Tasks) => {
   const {
     activeList,
+    setLists,
+    lists,
+    activeListId,
   } = useReminders();
 
+  if (!activeList) {
+    return <main className="w-[65%] ml-16 mt-8" />;
+  }
+
   return (
-    <div key={id} className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
+    <div className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
       <li
         onClick={() =>
-          activeList?.tasks.filter(
-            task => task.id !== id
-          )
-        }
+          setLists(
+            lists.map(list =>
+              list.id === activeListId
+                ? {
+                  ...activeList,
+                  tasks: activeList.tasks.filter(
+                    task => task.id !== id
+                  ),
+                }
+                : list)
+          )}
         className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
       >
         {input}
@@ -33,15 +47,24 @@ const Task = ({ id, input, flagged }: Tasks) => {
       </button>
 
       <button
+      onClick={() =>
+        setLists(
+          lists.map(list =>
+            list.id === activeListId
+              ? {
+                ...activeList,
+                tasks: activeList.tasks.map(task =>
+                  task.id === id
+                    ? {
+                      ...task,
+                      flagged: !flagged,
+                    }
+                    : task),
+              }
+              : list)
+        )}
         type="button"
         className="p-2 rounded-lg border-2 bg-slate-100 border-slate-100"
-        onClick={() =>
-          activeList?.tasks.map(task =>
-            task.id === id ? {
-              ...task,
-              flagged: !task.flagged,
-            } : task)
-        }
       >
         <img
           alt="flag"
