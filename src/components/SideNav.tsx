@@ -1,15 +1,14 @@
 import React from 'react';
 import '../css/index.css';
-import { v4 as uuidv4 } from 'uuid';
-import Lists from './Lists';
 import { Tasks, useReminders } from '../utils/RemindersContext';
-import Bubble from './Bubble';
+import Bubble from './ListView';
 import Main from './Main';
 import calendartwo from '../assets/icons/calendar-two.png';
 import calendar from '../assets/icons/calendar.png';
 import boxes from '../assets/icons/boxes.png';
 import flag from '../assets/icons/red-flag.png';
 import Input from './Input';
+import TaskList from './TaskList';
 
 const SideNav = () => {
   const { activeListId, lists } = useReminders();
@@ -29,30 +28,40 @@ const SideNav = () => {
         </nav>
         <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
           <Input placeholder="Search" />
-          <ul>
-            <Bubble tasks={[]} name="Today" icon={calendartwo} id={uuidv4()} />
-            <Bubble tasks={[]} name="Scheduled" icon={calendar} id={uuidv4()} />
-            <Bubble tasks={[]} name="All" icon={boxes} id={uuidv4()} />
-            <Bubble tasks={[]} name="Flagged" icon={flag} id={uuidv4()} />
+          <ul className="grid grid-cols-2">
+            <Bubble name="Today" icon={calendartwo} />
+            <Bubble name="Scheduled" icon={calendar} />
+            <Bubble name="All" icon={boxes} />
+            <Bubble name="Flagged" icon={flag} />
           </ul>
           <Input placeholder="Add List" />
-          <Lists />
+          <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
+            <ul className="ml-[16px] mt-2 mr-[16px]">
+              {lists.map(list => (
+                <TaskList key={list.id} id={list.id} name={list.name} tasks={list.tasks} />
+              ))}
+            </ul>
         </nav>
       </>
     );
   }
 
   return (
-    <nav className="md:w-[25%] m-6 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
+    <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
       <Input placeholder="Search" />
       <ul className="grid grid-cols-2">
-        <Bubble tasks={[]} name="Today" icon={calendartwo} id={uuidv4()} />
-        <Bubble tasks={[]} name="Scheduled" icon={calendar} id={uuidv4()} />
-        <Bubble tasks={[]} name="All" icon={boxes} id={uuidv4()} />
-        <Bubble tasks={[]} name="Flagged" icon={flag} id={uuidv4()} />
+        <Bubble name="Today" icon={calendartwo} />
+        <Bubble name="Scheduled" icon={calendar} />
+        <Bubble name="All" icon={boxes} />
+        <Bubble name="Flagged" icon={flag} />
       </ul>
       <Input placeholder="Add List" />
-      <Lists />
+      <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
+        <ul className="ml-[16px] mt-2 mr-[16px]">
+          {lists.map(list => (
+            <TaskList key={list.id} id={list.id} name={list.name} tasks={list.tasks} />
+          ))}
+        </ul>
     </nav>
   );
 };

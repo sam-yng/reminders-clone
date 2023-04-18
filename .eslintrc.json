@@ -8,7 +8,8 @@
         "airbnb/hooks",
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -36,6 +37,7 @@
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "react/function-component-definition": "off",
-        "no-shadow": "off"
+        "no-shadow": "off",
+        "jsx-quotes": "off"
     }
 }

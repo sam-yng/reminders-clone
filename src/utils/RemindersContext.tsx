@@ -23,7 +23,6 @@ export type List = {
   id: string;
   name: string;
   tasks: Array<Tasks>;
-  icon?: string
 };
 
 export type RemindersContextType = {
