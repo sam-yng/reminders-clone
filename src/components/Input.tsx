@@ -10,7 +10,7 @@ type InputProps = {
 
 const Input = ({ placeholder }: InputProps) => {
   const {
-    lists, setLists, activeListId, name, setName, input, setInput, activeList
+    lists, setLists, activeListId, name, allList, setName, input, setInput, activeList
   } = useReminders();
 
   const handleListChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const Input = ({ placeholder }: InputProps) => {
   };
 
   const handleTaskAdd = (e: { code: string }) => {
-    if (!activeList) {
+    if (!activeList || !allList) {
       return;
     }
 
@@ -45,6 +45,7 @@ const Input = ({ placeholder }: InputProps) => {
             ? { ...activeList, tasks: newTaskList }
             : list)
       );
+      allList.tasks.splice(newTaskList.length, 0, newTaskList[newTaskList.length - 1])
       setInput('');
     }
   };

@@ -37,7 +37,8 @@ export type RemindersContextType = {
   input: string;
   setInput: (input: string) => void
   activeList: List | undefined
-  totalCount: number
+
+  allList: List | undefined
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -47,7 +48,12 @@ const RemindersContext = createContext<RemindersContextType | undefined>(
 export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [lists, setLists] = useState<List[]>([]);
+  const [lists, setLists] = useState<List[]>([
+    { id: 'Today', name: 'Today', tasks: [] },
+    { id: 'Scheduled', name: 'Scheduled', tasks: [] },
+    { id: 'All', name: 'All', tasks: [] },
+    { id: 'Flagged', name: 'Flagged', tasks: [] },
+  ]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
   const [input, setInput] = useState<string>('');
@@ -57,12 +63,10 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     [lists, activeListId]
   );
 
-  let totalCount = 0;
-  for (let i = 0; i < lists.length; i++) {
-    if (lists[i].tasks.length > 0) {
-      totalCount += lists[i].tasks.length;
-    }
-  }
+  const allList = useMemo(
+    () => lists.find(list => list.id === "All"),
+    [lists]
+  )
 
   useEffect(() => {
     const data = localStorage.getItem('LIST_STATE');
@@ -85,8 +89,8 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     input,
     setInput,
     activeList,
-    totalCount,
-  }), [activeList, activeListId, input, lists, name, totalCount]);
+    allList
+  }), [activeList, activeListId, allList, input, lists, name]);
 
   return (
     <RemindersContext.Provider

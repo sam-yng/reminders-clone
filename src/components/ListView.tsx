@@ -1,6 +1,11 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import '../css/index.css';
 import { useReminders } from '../utils/RemindersContext';
+import calendartwo from '../assets/icons/calendar-two.png';
+import calendar from '../assets/icons/calendar.png';
+import boxes from '../assets/icons/boxes.png';
+import flag from '../assets/icons/red-flag.png';
 
 type ListViewProps = {
   icon: string
@@ -10,6 +15,11 @@ type ListViewProps = {
 
 const ListView = ({ icon, count, name }: ListViewProps) => {
   const { setActiveListId } = useReminders();
+
+  if (name === "All") {icon = boxes}
+  if (name === "Flagged") {icon = flag}
+  if (name === "Today") {icon = calendartwo}
+  if (name === "Scheduled") {icon = calendar}
 
   return (
     <button
