@@ -89,7 +89,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     input,
     setInput,
     activeList,
-    allList
+    allList,
   }), [activeList, activeListId, allList, input, lists, name]);
 
   return (

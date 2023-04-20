@@ -10,7 +10,15 @@ type InputProps = {
 
 const Input = ({ placeholder }: InputProps) => {
   const {
-    lists, setLists, activeListId, name, allList, setName, input, setInput, activeList
+    lists,
+    setLists,
+    activeListId,
+    name,
+    allList,
+    setName,
+    input,
+    setInput,
+    activeList,
   } = useReminders();
 
   const handleListChange = (event: React.ChangeEvent<HTMLInputElement>) => {

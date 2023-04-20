@@ -20,18 +20,16 @@ const Task = ({ id, input, flagged }: Tasks) => {
   return (
     <div className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
       <li
-        onClick={() =>
-          setLists(
-            lists.map(list =>
-              list.id === activeListId
-                ? {
-                  ...activeList,
-                  tasks: activeList.tasks.filter(
-                    task => task.id !== id
-                  ),
-                }
-                : list)
-          )}
+        onClick={() => setLists(lists.map(list =>
+          list.id === activeListId
+            ? {
+              ...activeList,
+              tasks: activeList.tasks.filter(
+                task => task.id !== id
+              ),
+            }
+            : list)
+        )}
         className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
       >
         {input}
