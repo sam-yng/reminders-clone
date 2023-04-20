@@ -24,20 +24,11 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "import/no-unresolved": "off",
-        "react/jsx-filename-extension": "off",
-        "import/extensions": "off",
-        "comma-dangle": "off",
-        "no-plusplus": "off",
-        "no-else-return": "off",
         "indent": [2],
-        "no-confusing-arrow": "off",
-        "arrow-parens": "off",
-        "implicit-arrow-linebreak": "off",
-        "jsx-a11y/no-noninteractive-element-interactions": "off",
-        "jsx-a11y/click-events-have-key-events": "off",
         "react/function-component-definition": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+        "import/extensions": "off",
         "no-shadow": "off",
-        "jsx-quotes": "off"
+        "import/no-unresolved": "off"
     }
 }

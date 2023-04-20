@@ -24,13 +24,17 @@ const Main = () => {
 
   return (
     <main className="md:w-[65%] w-[80%] m-auto md:ml-16 md:mt-8">
+      <button
+      type="button"
+      onClick={() => setActiveListId(null)}
+      onKeyDown={handleBack}
+      >
       <img
         alt="arrow"
         src={arrow}
-        onClick={() => setActiveListId(null)}
-        onKeyDown={handleBack}
         className="md:hidden block h-6 rotate-180 mt-4"
       />
+      </button>
       <article className="flex flex-row mt-4">
         <h1 className="md:text-[40px] text-[25px] font-robmedium mb-4">
           {activeList.name}

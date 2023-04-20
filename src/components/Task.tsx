@@ -19,21 +19,24 @@ const Task = ({ id, input, flagged }: Tasks) => {
 
   return (
     <div className="md:ml-6 mt-6 md:w-[46%] flex flex-row">
-      <li
-        onClick={() => setLists(lists.map(list =>
-          list.id === activeListId
-            ? {
-              ...activeList,
-              tasks: activeList.tasks.filter(
-                task => task.id !== id
-              ),
-            }
-            : list)
-        )}
+      <button
+      type="button"
+      onClick={() => setLists(lists.map(list =>
+        list.id === activeListId
+          ? {
+            ...activeList,
+            tasks: activeList.tasks.filter(
+              task => task.id !== id
+            ),
+          }
+          : list)
+      )}
         className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
       >
+      <li>
         {input}
       </li>
+      </button>
       <button type="button" className="ml-auto mr-6 w-36 flex p-2 border-2 border-slate-100 rounded-lg items-cente bg-slate-100">
         <img alt="icon" className="h-4 pl-2" src={calendar} />
         <input
