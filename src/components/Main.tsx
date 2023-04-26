@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/index.css';
 import { useReminders } from '../utils/RemindersContext';
 import 'react-calendar/dist/Calendar.css';
 import arrow from '../assets/icons/right-arrow.png';

@@ -29,6 +29,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
         "import/extensions": "off",
         "no-shadow": "off",
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "react/require-default-props": "off"
     }
 }

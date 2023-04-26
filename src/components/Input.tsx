@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/index.css';
 import { v4 as uuidv4 } from 'uuid';
 import plus from '../assets/icons/plus.png';
 import { useReminders } from '../utils/RemindersContext';

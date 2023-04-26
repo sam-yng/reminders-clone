@@ -48,15 +48,10 @@ const RemindersContext = createContext<RemindersContextType | undefined>(
 export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [lists, setLists] = useState<List[]>([
-    { id: 'Today', name: 'Today', tasks: [] },
-    { id: 'Scheduled', name: 'Scheduled', tasks: [] },
-    { id: 'All', name: 'All', tasks: [] },
-    { id: 'Flagged', name: 'Flagged', tasks: [] },
-  ]);
+  const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [name, setName] = useState<string>('');
-  const [input, setInput] = useState<string>('');
+  const [name, setName] = useState('');
+  const [input, setInput] = useState('');
 
   const activeList = useMemo(
     () => lists.find(list => list.id === activeListId),

@@ -1,31 +1,22 @@
 /* eslint-disable no-param-reassign */
 import React from 'react';
-import '../css/index.css';
 import { useReminders } from '../utils/RemindersContext';
-import calendartwo from '../assets/icons/calendar-two.png';
-import calendar from '../assets/icons/calendar.png';
-import boxes from '../assets/icons/boxes.png';
-import flag from '../assets/icons/red-flag.png';
 
 type ListViewProps = {
   icon: string
-  count?: number
+  count: number
   name: string
+  id: string
 }
 
-const ListView = ({ icon, count, name }: ListViewProps) => {
+const ListView: React.FC<ListViewProps> = ({ icon, count, name, id }) => {
   const { setActiveListId } = useReminders();
-
-  if (name === "All") {icon = boxes}
-  if (name === "Flagged") {icon = flag}
-  if (name === "Today") {icon = calendartwo}
-  if (name === "Scheduled") {icon = calendar}
 
   return (
     <button
       type="button"
       className="border-2 bg-slate-100 border-slate-100 m-3 p-2 rounded-lg"
-      onClick={() => setActiveListId(name)}
+      onClick={() => setActiveListId(id)}
     >
       <div className="flex flex-row justify-between">
         <img
@@ -39,9 +30,5 @@ const ListView = ({ icon, count, name }: ListViewProps) => {
     </button>
   );
 };
-
-ListView.defaultProps = {
-  count: 0
-}
 
 export default ListView;
