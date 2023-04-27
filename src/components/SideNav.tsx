@@ -1,16 +1,28 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid'
 import { useReminders } from '../utils/RemindersContext';
 import ListView from './ListView';
 import Main from './Main';
-import Input from './Input';
+import ListInput from './ListInput'
 import TaskList from './TaskList';
 import calendartwo from '../assets/icons/calendar-two.png';
 import calendar from '../assets/icons/calendar.png';
 import boxes from '../assets/icons/boxes.png';
 import flag from '../assets/icons/red-flag.png';
+import SearchInput from './SearchInput';
 
 const SideNav = () => {
-  const { activeListId, lists } = useReminders();
+  const { activeListId, lists, setLists, setName, name } = useReminders();
+
+  const handleListAdd = () => {
+    lists.splice(0, 0, { id: uuidv4(), name, tasks: [] });
+    setLists(lists);
+    setName('');
+  };
+
+  const handleListChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   if (activeListId !== null) {
     return (
@@ -19,14 +31,19 @@ const SideNav = () => {
           <Main />
         </nav>
         <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
-          <Input placeholder="Search" />
+          <SearchInput placeholder="Search" />
           <ul className="grid grid-cols-2">
             <ListView icon={calendartwo} count={0} name="Today" id="Today" />
             <ListView icon={calendar} count={0} name="Scheduled" id="Scheduled" />
             <ListView icon={boxes} count={0} name="All" id="All" />
             <ListView icon={flag} count={0} name="Flagged" id="Flagged" />
           </ul>
-          <Input placeholder="Add List" />
+          <ListInput
+            placeholder='Add List'
+            value={name}
+            handleListAdd={handleListAdd}
+            handleListChange={handleListChange}
+          />
           <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
           <ul className="ml-4 mt-2 mr-2">
             {lists.map(list => (
@@ -40,14 +57,19 @@ const SideNav = () => {
 
   return (
     <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
-      <Input placeholder="Search" />
+      <SearchInput placeholder="Search" />
       <ul className="grid grid-cols-2">
         <ListView icon={calendartwo} count={0} name="Today" id="Today" />
         <ListView icon={calendar} count={0} name="Scheduled" id="Scheduled" />
         <ListView icon={boxes} count={0} name="All" id="All" />
         <ListView icon={flag} count={0} name="Flagged" id="Flagged" />
       </ul>
-      <Input placeholder="Add List" />
+      <ListInput
+        placeholder='Add List'
+        value={name}
+        handleListAdd={handleListAdd}
+        handleListChange={handleListChange}
+      />
       <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
       <ul className="ml-4 mt-2 mr-2">
         {lists.map(list => (

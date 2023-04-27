@@ -1,19 +1,51 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid'
 import { useReminders } from '../utils/RemindersContext';
 import 'react-calendar/dist/Calendar.css';
 import arrow from '../assets/icons/right-arrow.png';
-import Input from './Input';
 import Task from './Task';
+import TaskInput from './TaskInput';
 
 const Main = () => {
   const {
     setActiveListId,
     activeList,
+    input,
+    setInput,
+    setLists,
+    lists,
+    activeListId
   } = useReminders();
 
   const handleBack = (e: { code: string }) => {
     if (e.code === 'Escape') {
       setActiveListId(null);
+    }
+  };
+
+  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+  };
+
+  const handleTaskAdd = (e: { code: string }) => {
+    if (!activeList) {
+      return;
+    }
+
+    if (e.code === 'Enter') {
+      const newTaskList = activeList.tasks.concat({
+        id: uuidv4(),
+        input,
+        complete: false,
+        flagged: false,
+      });
+      setLists(
+        lists.map(list =>
+          list.id === activeListId
+            ? { ...activeList, tasks: newTaskList }
+            : list)
+      );
+      setInput('');
     }
   };
 
@@ -40,7 +72,12 @@ const Main = () => {
         </h1>
         <h1 className="md:text-[40px] text-[20px] ml-auto">{activeList.tasks.length}</h1>
       </article>
-      <Input placeholder="" />
+      <TaskInput
+        placeholder=''
+        value={input}
+        handleTaskAdd={handleTaskAdd}
+        handleTaskChange={handleTaskChange}
+      />
       <div>
         <ul>
           {activeList.tasks.map(item => (
