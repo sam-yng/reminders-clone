@@ -12,7 +12,13 @@ import flag from '../assets/icons/red-flag.png';
 import SearchInput from './SearchInput';
 
 const SideNav = () => {
-  const { activeListId, lists, setLists, setName, name } = useReminders();
+  const {
+    activeListId,
+    lists,
+    setLists,
+    setName,
+    name,
+  } = useReminders();
 
   const handleListAdd = () => {
     lists.splice(0, 0, { id: uuidv4(), name, tasks: [] });
@@ -33,10 +39,10 @@ const SideNav = () => {
         <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
           <SearchInput placeholder="Search" />
           <ul className="grid grid-cols-2">
-            <ListView icon={calendartwo} count={0} name="Today" id="Today" />
-            <ListView icon={calendar} count={0} name="Scheduled" id="Scheduled" />
-            <ListView icon={boxes} count={0} name="All" id="All" />
-            <ListView icon={flag} count={0} name="Flagged" id="Flagged" />
+            <ListView icon={calendartwo} count={0} name="Today" />
+            <ListView icon={calendar} count={0} name="Scheduled" />
+            <ListView icon={boxes} count={0} name="All" />
+            <ListView icon={flag} count={0} name="Flagged" />
           </ul>
           <ListInput
             placeholder='Add List'
@@ -59,10 +65,10 @@ const SideNav = () => {
     <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
       <SearchInput placeholder="Search" />
       <ul className="grid grid-cols-2">
-        <ListView icon={calendartwo} count={0} name="Today" id="Today" />
-        <ListView icon={calendar} count={0} name="Scheduled" id="Scheduled" />
-        <ListView icon={boxes} count={0} name="All" id="All" />
-        <ListView icon={flag} count={0} name="Flagged" id="Flagged" />
+        <ListView icon={calendartwo} count={0} name="Today" />
+        <ListView icon={calendar} count={0} name="Scheduled" />
+        <ListView icon={boxes} count={0} name="All" />
+        <ListView icon={flag} count={0} name="Flagged" />
       </ul>
       <ListInput
         placeholder='Add List'

@@ -37,8 +37,6 @@ export type RemindersContextType = {
   input: string;
   setInput: (input: string) => void
   activeList: List | undefined
-
-  allList: List | undefined
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -57,11 +55,6 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     () => lists.find(list => list.id === activeListId),
     [lists, activeListId]
   );
-
-  const allList = useMemo(
-    () => lists.find(list => list.id === "All"),
-    [lists]
-  )
 
   useEffect(() => {
     const data = localStorage.getItem('LIST_STATE');
@@ -84,8 +77,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     input,
     setInput,
     activeList,
-    allList,
-  }), [activeList, activeListId, allList, input, lists, name]);
+  }), [activeList, activeListId, input, lists, name]);
 
   return (
     <RemindersContext.Provider

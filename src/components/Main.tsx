@@ -14,7 +14,7 @@ const Main = () => {
     setInput,
     setLists,
     lists,
-    activeListId
+    activeListId,
   } = useReminders();
 
   const handleBack = (e: { code: string }) => {
