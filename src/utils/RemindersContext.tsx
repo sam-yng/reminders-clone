@@ -23,6 +23,7 @@ export type List = {
   id: string;
   name: string;
   tasks: Array<Tasks>;
+  advanced: boolean
 };
 
 export type RemindersContextType = {
@@ -46,7 +47,12 @@ const RemindersContext = createContext<RemindersContextType | undefined>(
 export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [lists, setLists] = useState<List[]>([]);
+  const [lists, setLists] = useState<List[]>([
+    { id: 'Today', name: 'Today', tasks: [], advanced: true },
+    { id: 'Scheduled', name: 'Scheduled', tasks: [], advanced: true },
+    { id: 'All', name: 'All', tasks: [], advanced: true },
+    { id: 'Flagged', name: 'Flagged', tasks: [], advanced: true },
+  ]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [input, setInput] = useState('');
