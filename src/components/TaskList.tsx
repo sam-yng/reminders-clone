@@ -4,12 +4,17 @@ import { useReminders, List } from '../utils/RemindersContext';
 
 const TaskList = ({ id, name }: List) => {
   const {
-    lists, setLists, setActiveListId
+    lists, setLists, setActiveListId, setInput
   } = useReminders();
+
+  const newListView = () => {
+    setActiveListId(id)
+    setInput('')
+  }
 
   return (
       <div key={id} className="flex flex-row justify-between">
-        <button type="button" onClick={() => setActiveListId(id)}>
+        <button type="button" onClick={newListView}>
           <li id="name" className="m-2 font-robreg">
             {name}
           </li>
