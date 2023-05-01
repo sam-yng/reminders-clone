@@ -74,9 +74,9 @@ const Main = () => {
       </article>
       <TaskInput
         placeholder=''
-        value={input}
-        handleTaskAdd={handleTaskAdd}
-        handleTaskChange={handleTaskChange}
+        taskName={input}
+        onTaskAdd={handleTaskAdd}
+        onTaskChange={handleTaskChange}
       />
       <div>
         <ul>

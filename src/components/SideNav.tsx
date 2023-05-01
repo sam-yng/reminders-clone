@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid'
-import { useReminders } from '../utils/RemindersContext';
+import { Tasks, useReminders } from '../utils/RemindersContext';
 import ListView from './ListView';
 import Main from './Main';
 import ListInput from './ListInput'
@@ -21,10 +21,20 @@ const SideNav = () => {
     name,
   } = useReminders();
 
+  const allTasks: Array<Tasks[]> = [];
+  for (let i = 0; i < lists.length; i++) {
+    if (lists[i].tasks.length >= 0) {
+      allTasks.splice(0, 0, lists[i].tasks);
+    }
+  }
+  const newArr = allTasks.flat();
+  const flaggedArr = newArr.filter(item => item.flagged === true);
+
   const handleListAdd = () => {
     lists.splice(0, 0, { id: uuidv4(), name, tasks: [], advanced: false });
     setLists(lists);
     setName('');
+    setActiveListId(lists[0].id)
   };
 
   const handleListChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,13 +66,13 @@ const SideNav = () => {
               id="All"
               setActiveListId={setActiveListId}
               icon={boxes}
-              count={0}
+              count={newArr.length}
               name="All" />
             <ListView
               id="Flagged"
               setActiveListId={setActiveListId}
               icon={flag}
-              count={0}
+              count={flaggedArr.length}
               name="Flagged" />
           </ul>
           <ListInput

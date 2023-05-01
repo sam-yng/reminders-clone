@@ -38,6 +38,7 @@ export type RemindersContextType = {
   input: string;
   setInput: (input: string) => void
   activeList: List | undefined
+
   allLists: List[]
 };
 
@@ -89,7 +90,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     input,
     setInput,
     activeList,
-    allLists
+    allLists,
   }), [activeList, activeListId, input, lists, name, allLists]);
 
   return (

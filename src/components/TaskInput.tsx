@@ -2,23 +2,23 @@ import React from "react";
 
 type TaskInputProps = {
   placeholder: string
-  value: string
-  handleTaskAdd: (e: {code: string;}) => void
-  handleTaskChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  taskName: string
+  onTaskAdd: (taskName: {code: string;}) => void
+  onTaskChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const TaskInput = ({
   placeholder,
-  value,
-  handleTaskAdd,
-  handleTaskChange
+  taskName,
+  onTaskAdd,
+  onTaskChange
 }: TaskInputProps) => (
     <div className="flex flex-row md:mt-8">
     <input
-      onKeyDown={handleTaskAdd}
-      value={value}
+      onKeyDown={onTaskAdd}
+      value={taskName}
       placeholder={placeholder}
-      onChange={handleTaskChange}
+      onChange={onTaskChange}
       type="text"
       className="md:pl-2 mb-2 md:w-[50%] w-full border-2 rounded-md border-blue-300"
     />

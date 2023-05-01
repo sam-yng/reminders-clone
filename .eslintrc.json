@@ -30,6 +30,7 @@
         "import/extensions": "off",
         "no-shadow": "off",
         "import/no-unresolved": "off",
-        "react/require-default-props": "off"
+        "react/require-default-props": "off",
+        "no-plusplus": "off"
     }
 }
