@@ -11,35 +11,29 @@ export enum ListState {
   Deleted = 'deleted',
 }
 
-export type Tasks = {
+export type Task = {
   id: string;
-  input: string;
+  name: string;
   complete?: boolean;
   flagged: boolean;
   date?: string;
+  listId: string;
 };
 
 export type List = {
   id: string;
   name: string;
-  tasks: Array<Tasks>;
-  advanced: boolean
 };
 
 export type RemindersContextType = {
   lists: List[];
   activeListId: string | null;
 
+  tasks: Task[]
+  setTasks: (task: Task[]) => void
+
   setLists: (lists: List[]) => void;
   setActiveListId: (listId: string | null) => void;
-
-  name: string;
-  setName: (name: string) => void
-  input: string;
-  setInput: (input: string) => void
-  activeList: List | undefined
-
-  allLists: List[]
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -49,49 +43,37 @@ const RemindersContext = createContext<RemindersContextType | undefined>(
 export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [lists, setLists] = useState<List[]>([
-    { id: 'Today', name: 'Today', tasks: [], advanced: true },
-    { id: 'Scheduled', name: 'Scheduled', tasks: [], advanced: true },
-    { id: 'All', name: 'All', tasks: [], advanced: true },
-    { id: 'Flagged', name: 'Flagged', tasks: [], advanced: true },
-  ]);
+  const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [name, setName] = useState('');
-  const [input, setInput] = useState('');
-
-  const activeList = useMemo(
-    () => lists.find(list => list.id === activeListId),
-    [lists, activeListId]
-  );
-
-  const allLists = useMemo(
-    () => lists.filter(list => list.advanced === false),
-    [lists]
-  )
+  const [tasks, setTasks] = useState<Task[]>([])
 
   useEffect(() => {
-    const data = localStorage.getItem('LIST_STATE');
+    const data = localStorage.getItem('LISTS');
     if (data !== null) setLists(JSON.parse(data));
+    const taskData = localStorage.getItem('TASKS');
+    if (taskData !== null) setTasks(JSON.parse(taskData))
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem('LIST_STATE', JSON.stringify(lists));
+      localStorage.setItem('LISTS', JSON.stringify(lists));
     });
   }, [lists]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.setItem('TASKS', JSON.stringify(tasks));
+    });
+  }, [tasks]);
 
   const value = useMemo(() => ({
     lists,
     activeListId,
     setLists,
     setActiveListId,
-    name,
-    setName,
-    input,
-    setInput,
-    activeList,
-    allLists,
-  }), [activeList, activeListId, input, lists, name, allLists]);
+    tasks,
+    setTasks
+  }), [activeListId, lists, tasks]);
 
   return (
     <RemindersContext.Provider
