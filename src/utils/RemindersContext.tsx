@@ -4,34 +4,33 @@ import React, {
   useState,
   useEffect,
   useMemo,
-} from 'react';
-import { v4 as uuidv4 } from 'uuid';
+} from "react";
 
 export enum ListState {
-  Active = 'active',
-  Deleted = 'deleted',
+  Active = "active",
+  Deleted = "deleted",
 }
 
-export type Tasks = {
+export type Task = {
   id: string;
   name: string;
   complete?: boolean;
   flagged: boolean;
   date?: string;
+  listId: string;
 };
 
 export type List = {
   id: string;
   name: string;
-  tasks: Array<Tasks>;
 };
 
 export type RemindersContextType = {
   lists: List[];
   activeListId: string | null;
 
-  bubbleLists: List[];
-  setBubbleLists: (lists: List[]) => void;
+  tasks: Task[];
+  setTasks: (task: Task[]) => void;
 
   setLists: (lists: List[]) => void;
   setActiveListId: (listId: string | null) => void;
@@ -46,38 +45,41 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
-  const [bubbleLists, setBubbleLists] = useState<List[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
-    const data = localStorage.getItem('LIST_STATE');
+    const data = localStorage.getItem("LISTS");
     if (data !== null) setLists(JSON.parse(data));
-    setBubbleLists([
-      { id: uuidv4(), name: 'Today', tasks: [] },
-      { id: uuidv4(), name: 'Scheduled', tasks: [] },
-      { id: uuidv4(), name: 'All', tasks: [] },
-      { id: uuidv4(), name: 'Flagged', tasks: [] },
-    ]);
+    const taskData = localStorage.getItem("TASKS");
+    if (taskData !== null) setTasks(JSON.parse(taskData));
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem('LIST_STATE', JSON.stringify(lists));
+      localStorage.setItem("LISTS", JSON.stringify(lists));
     });
   }, [lists]);
 
-  const value = useMemo(() => ({
-    lists,
-    activeListId,
-    setLists,
-    setActiveListId,
-    bubbleLists,
-    setBubbleLists,
-  }), [activeListId, bubbleLists, lists]);
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.setItem("TASKS", JSON.stringify(tasks));
+    });
+  }, [tasks]);
+
+  const value = useMemo(
+    () => ({
+      lists,
+      activeListId,
+      setLists,
+      setActiveListId,
+      tasks,
+      setTasks,
+    }),
+    [activeListId, lists, tasks]
+  );
 
   return (
-    <RemindersContext.Provider
-      value={value}
-    >
+    <RemindersContext.Provider value={value}>
       {children}
     </RemindersContext.Provider>
   );
@@ -87,7 +89,7 @@ export const useReminders = (): RemindersContextType => {
   const value = useContext(RemindersContext);
   if (!value) {
     throw new Error(
-      'useReminders can only be called from within a RemindersProvider'
+      "useReminders can only be called from within a RemindersProvider"
     );
   }
   return value;

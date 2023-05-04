@@ -1,8 +1,7 @@
-import React from 'react';
-import '../css/index.css';
-import SideNav from '../components/SideNav';
-import Main from '../components/Main';
-import { RemindersProvider } from '../utils/RemindersContext';
+import React from "react";
+import SideNav from "../components/SideNav";
+import Main from "../components/Main";
+import { RemindersProvider } from "../utils/RemindersContext";
 
 const App = () => (
   <RemindersProvider>
