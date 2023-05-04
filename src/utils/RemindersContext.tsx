@@ -17,7 +17,7 @@ export type Task = {
   complete?: boolean;
   flagged: boolean;
   date?: string;
-  listId: string;
+  listId: string | null;
 };
 
 export type List = {
@@ -33,7 +33,7 @@ export type RemindersContextType = {
   setTasks: (task: Task[]) => void;
 
   setLists: (lists: List[]) => void;
-  setActiveListId: (listId: string | null) => void;
+  setActiveListId: (listId: string) => void;
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(

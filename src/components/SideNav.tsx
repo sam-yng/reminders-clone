@@ -12,12 +12,11 @@ import SearchInput from "./SearchInput";
 
 const SideNav = () => {
   const { setActiveListId, lists, setLists } = useReminders();
-
   const [name, setName] = useState<string>("");
 
   const handleListAdd = () => {
     lists.splice(0, 0, { id: uuidv4(), name });
-    setLists(lists);
+    setLists(lists.filter((list) => list.id));
     setName("");
     setActiveListId(lists[0].id);
   };

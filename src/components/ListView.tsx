@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { isToday } from "date-fns";
 import { useReminders } from "../utils/RemindersContext";
 
-type ListViewProps = {
+export type ListViewProps = {
   icon: string;
   type: "today" | "scheduled" | "flagged" | "all";
 };

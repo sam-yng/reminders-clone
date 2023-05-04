@@ -3,11 +3,10 @@ import cross from "../assets/icons/close.png";
 import { useReminders, List } from "../utils/RemindersContext";
 
 const TaskList = ({ id, name }: List) => {
-  const { lists, setLists, setActiveListId, setInput } = useReminders();
+  const { lists, setLists, setActiveListId } = useReminders();
 
   const newListView = () => {
     setActiveListId(id);
-    setInput("");
   };
 
   return (
