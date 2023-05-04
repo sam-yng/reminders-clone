@@ -2,13 +2,13 @@ import React, { useMemo } from "react";
 import { isToday } from "date-fns";
 import { useReminders } from "../utils/RemindersContext";
 
-export type ListViewProps = {
+type ListViewProps = {
   icon: string;
   type: "today" | "scheduled" | "flagged" | "all";
 };
 
 const ListView: React.FC<ListViewProps> = ({ icon, type }) => {
-  const { tasks } = useReminders();
+  const { tasks, setActiveListId } = useReminders();
 
   const name = useMemo(() => {
     switch (type) {
@@ -60,6 +60,7 @@ const ListView: React.FC<ListViewProps> = ({ icon, type }) => {
     <button
       type="button"
       className="border-2 bg-slate-100 border-slate-100 m-3 p-2 rounded-lg"
+      onClick={() => setActiveListId(type)}
     >
       <div className="flex flex-row justify-between">
         <img className="h-8" alt="icon" src={icon} />

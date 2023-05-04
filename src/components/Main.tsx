@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { format, isToday } from "date-fns";
 import { useReminders } from "../utils/RemindersContext";
 import "react-calendar/dist/Calendar.css";
 import arrow from "../assets/icons/right-arrow.png";
@@ -10,6 +11,84 @@ const Main = () => {
   const { setActiveListId, setTasks, tasks, activeListId, lists } =
     useReminders();
   const [input, setInput] = useState<string>("");
+
+  const tasksByList = useMemo(() => {
+    switch (activeListId) {
+      case "today":
+        return tasks
+          .filter((task) => task.date === format(new Date(), "MM/dd/yyy"))
+          .map((item) => (
+            <TaskItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              flagged={item.flagged}
+              listId={activeListId}
+            />
+          ));
+      case "scheduled":
+        return tasks
+          .filter((task) => task.date)
+          .map((item) => (
+            <TaskItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              flagged={item.flagged}
+              listId={activeListId}
+            />
+          ));
+      case "flagged":
+        return tasks
+          .filter((task) => task.flagged === true)
+          .map((item) => (
+            <TaskItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              flagged={item.flagged}
+              listId={activeListId}
+            />
+          ));
+      case "all":
+        return tasks.map((item) => (
+          <TaskItem
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            flagged={item.flagged}
+            listId={activeListId}
+          />
+        ));
+      default:
+        return tasks
+          .filter((task) => task.listId === activeListId)
+          .map((item) => (
+            <TaskItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              flagged={item.flagged}
+              listId={activeListId}
+            />
+          ));
+    }
+  }, [activeListId, tasks]);
+
+  const listName = useMemo(() => {
+    switch (activeListId) {
+      case "today":
+        return "Today";
+      case "scheduled":
+        return "Scheduled";
+      case "flagged":
+        return "Flagged";
+      case "all":
+        return "All";
+      default:
+        return lists.find((list) => list.id === activeListId)?.name;
+    }
+  }, [activeListId, lists]);
 
   const handleBack = (e: { code: string }) => {
     if (e.code === "Escape") {
@@ -53,10 +132,10 @@ const Main = () => {
       </button>
       <article className="flex flex-row mt-4">
         <h1 className="md:text-[40px] text-[25px] font-robmedium mb-4">
-          {lists.find((list) => list.id === activeListId)?.name}
+          {listName}
         </h1>
         <h1 className="md:text-[40px] text-[20px] ml-auto">
-          {tasks.filter((task) => task.listId === activeListId).length}
+          {tasksByList.length}
         </h1>
       </article>
       <TaskInput
@@ -66,19 +145,7 @@ const Main = () => {
         onTaskChange={handleTaskChange}
       />
       <div>
-        <ul>
-          {tasks
-            .filter((task) => task.listId === activeListId)
-            .map((item) => (
-              <TaskItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                flagged={item.flagged}
-                listId={activeListId}
-              />
-            ))}
-        </ul>
+        <ul>{tasksByList}</ul>
       </div>
     </main>
   );
