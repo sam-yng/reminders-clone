@@ -8,7 +8,7 @@ import TaskItem from "./TaskItem";
 import TaskInput from "./Inputs/TaskInput";
 
 const Main = () => {
-  const { setActiveListId, setTasks, tasks, activeListId, lists } =
+  const { setActiveListId, setTasks, tasks, activeListId, lists, theme } =
     useReminders();
   const [input, setInput] = useState<string>("");
 
@@ -90,6 +90,21 @@ const Main = () => {
     }
   }, [activeListId, lists]);
 
+  const inputStatus = useMemo(() => {
+    switch (activeListId) {
+      case "today":
+        return true;
+      case "scheduled":
+        return true;
+      case "flagged":
+        return true;
+      case "all":
+        return true;
+      default:
+        return false;
+    }
+  }, [activeListId]);
+
   const handleBack = (e: { code: string }) => {
     if (e.code === "Escape") {
       setActiveListId("");
@@ -114,40 +129,43 @@ const Main = () => {
   };
 
   if (!activeListId) {
-    return <div className="w-[65%] ml-16 mt-8" />;
+    return <div className={`w-[75%] pl-16 pt-8 ${theme ? "light" : "dark"}`} />;
   }
 
   return (
-    <main className="md:w-[65%] w-[80%] m-auto md:ml-16 md:mt-8">
-      <button
-        type="button"
-        onClick={() => setActiveListId("")}
-        onKeyDown={handleBack}
-      >
-        <img
-          alt="arrow"
-          src={arrow}
-          className="md:hidden block h-6 rotate-180 mt-4"
+    <div className={`w-[75%] ${theme ? "light" : "dark"}`}>
+      <main className={`m-auto md:ml-16 md:mt-8 ${theme ? "light" : "dark"}`}>
+        <button
+          type="button"
+          onClick={() => setActiveListId("")}
+          onKeyDown={handleBack}
+        >
+          <img
+            alt="arrow"
+            src={arrow}
+            className="md:hidden block h-6 rotate-180 mt-4"
+          />
+        </button>
+        <article className="flex flex-row mt-4">
+          <h1 className="md:text-[40px] text-[25px] font-robmedium mb-4">
+            {listName}
+          </h1>
+          <h1 className="md:text-[40px] text-[20px] ml-auto mr-16">
+            {tasksByList.length}
+          </h1>
+        </article>
+        <TaskInput
+          placeholder=""
+          taskName={input}
+          onTaskAdd={handleTaskAdd}
+          onTaskChange={handleTaskChange}
+          disabled={inputStatus}
         />
-      </button>
-      <article className="flex flex-row mt-4">
-        <h1 className="md:text-[40px] text-[25px] font-robmedium mb-4">
-          {listName}
-        </h1>
-        <h1 className="md:text-[40px] text-[20px] ml-auto">
-          {tasksByList.length}
-        </h1>
-      </article>
-      <TaskInput
-        placeholder=""
-        taskName={input}
-        onTaskAdd={handleTaskAdd}
-        onTaskChange={handleTaskChange}
-      />
-      <div>
-        <ul>{tasksByList}</ul>
-      </div>
-    </main>
+        <div>
+          <ul>{tasksByList}</ul>
+        </div>
+      </main>
+    </div>
   );
 };
 

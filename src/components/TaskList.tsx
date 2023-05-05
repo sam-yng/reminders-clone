@@ -1,12 +1,27 @@
 import React from "react";
 import cross from "../assets/icons/close.png";
+import whiteCross from "../assets/icons/closeWhite.png";
 import { useReminders, List } from "../utils/RemindersContext";
 
 const TaskList = ({ id, name }: List) => {
-  const { lists, setLists, setActiveListId } = useReminders();
+  const {
+    lists,
+    setLists,
+    setActiveListId,
+    activeListId,
+    theme,
+    setTasks,
+    tasks,
+  } = useReminders();
 
   const newListView = () => {
     setActiveListId(id);
+  };
+
+  const deleteList = () => {
+    setTasks(tasks.filter((task) => task.id === activeListId));
+    setLists(lists.filter((list) => list.id !== id));
+    setActiveListId("");
   };
 
   return (
@@ -16,11 +31,12 @@ const TaskList = ({ id, name }: List) => {
           {name}
         </li>
       </button>
-      <button
-        type="button"
-        onClick={() => setLists(lists.filter((list) => list.id !== id))}
-      >
-        <img alt="cross" className="h-3" src={cross} />
+      <button type="button" onClick={deleteList}>
+        <img
+          alt="cross"
+          className="h-3 mr-4"
+          src={theme === true ? cross : whiteCross}
+        />
       </button>
     </div>
   );

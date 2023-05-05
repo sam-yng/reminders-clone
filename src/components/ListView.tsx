@@ -64,9 +64,9 @@ const ListView: React.FC<ListViewProps> = ({ icon, type }) => {
     >
       <div className="flex flex-row justify-between">
         <img className="h-8" alt="icon" src={icon} />
-        <h1 className="text-[22px]">{count}</h1>
+        <h1 className="text-[22px] text-black">{count}</h1>
       </div>
-      <h1 className="pt-2 text-left text-[18px]">{name}</h1>
+      <h1 className="pt-2 text-left text-[18px] text-black">{name}</h1>
     </button>
   );
 };

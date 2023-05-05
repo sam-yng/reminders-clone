@@ -9,9 +9,10 @@ import calendar from "../assets/icons/calendar.png";
 import boxes from "../assets/icons/boxes.png";
 import flag from "../assets/icons/red-flag.png";
 import SearchInput from "./Inputs/SearchInput";
+import ThemeButton from "./ThemeButton";
 
 const SideNav = () => {
-  const { setActiveListId, lists, setLists } = useReminders();
+  const { setActiveListId, lists, setLists, theme } = useReminders();
   const [name, setName] = useState<string>("");
 
   const handleListAdd = (e: { code: string }) => {
@@ -28,7 +29,15 @@ const SideNav = () => {
   };
 
   return (
-    <nav className="md:w-[25%] m-4 md:m-0 h-[100%] md:border-r-2 border-gray-400 pt-6">
+    <nav
+      className={`md:w-[25%] m-4 md:m-0 h-full md:border-r-2 border-gray-400 pt-4 ${
+        theme ? "light" : "dark"
+      }`}
+    >
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="ml-4 font-robmedium text-[20px]">Reminder Clone</h1>
+        <ThemeButton />
+      </div>
       <SearchInput placeholder="Search" />
       <ul className="grid grid-cols-2">
         <ListView type="today" icon={calendartwo} />
@@ -42,7 +51,7 @@ const SideNav = () => {
         handleListAdd={handleListAdd}
         handleListChange={handleListChange}
       />
-      <h1 className="text-gray-500 ml-[18px] mt-5">My Lists</h1>
+      <h1 className="opacity-80 ml-[18px] mt-5">My Lists</h1>
       <ul className="ml-4 mt-2 mr-2">
         {lists.map((list) => (
           <TaskList key={list.id} id={list.id} name={list.name} />

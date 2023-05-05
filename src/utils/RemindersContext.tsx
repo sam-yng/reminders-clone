@@ -34,6 +34,9 @@ export type RemindersContextType = {
 
   setLists: (lists: List[]) => void;
   setActiveListId: (listId: string) => void;
+
+  theme: boolean;
+  setTheme: (theme: boolean) => void;
 };
 
 const RemindersContext = createContext<RemindersContextType | undefined>(
@@ -46,6 +49,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lists, setLists] = useState<List[]>([]);
   const [activeListId, setActiveListId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [theme, setTheme] = useState<boolean>(true);
 
   useEffect(() => {
     const data = localStorage.getItem("LISTS");
@@ -74,8 +78,10 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
       setActiveListId,
       tasks,
       setTasks,
+      theme,
+      setTheme,
     }),
-    [activeListId, lists, tasks]
+    [activeListId, lists, tasks, theme]
   );
 
   return (

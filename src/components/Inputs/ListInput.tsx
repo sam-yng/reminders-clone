@@ -20,7 +20,7 @@ const ListInput = ({
       placeholder={placeholder}
       onChange={handleListChange}
       onKeyDown={handleListAdd}
-      className="w-[95%] flex m-auto pl-4 border-2 rounded-md"
+      className="text-black w-[95%] flex m-auto pl-4 border-2 rounded-md"
     />
   </div>
 );
