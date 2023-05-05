@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { format, isToday } from "date-fns";
+import { format } from "date-fns";
 import { useReminders } from "../utils/RemindersContext";
 import "react-calendar/dist/Calendar.css";
 import arrow from "../assets/icons/right-arrow.png";
 import TaskItem from "./TaskItem";
-import TaskInput from "./TaskInput";
+import TaskInput from "./Inputs/TaskInput";
 
 const Main = () => {
   const { setActiveListId, setTasks, tasks, activeListId, lists } =

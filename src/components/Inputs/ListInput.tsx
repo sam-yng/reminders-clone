@@ -1,10 +1,9 @@
 import React from "react";
-import plus from "../assets/icons/plus.png";
 
 type ListInputProps = {
   placeholder: string;
   value: string;
-  handleListAdd: () => void;
+  handleListAdd: (e: { code: string }) => void;
   handleListChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -20,11 +19,9 @@ const ListInput = ({
       value={value}
       placeholder={placeholder}
       onChange={handleListChange}
-      className="w-[82%] flex m-auto pl-4 border-2 rounded-md"
+      onKeyDown={handleListAdd}
+      className="w-[95%] flex m-auto pl-4 border-2 rounded-md"
     />
-    <button type="button" onClick={handleListAdd}>
-      <img alt="plus" className="h-6 mr-5" src={plus} />
-    </button>
   </div>
 );
 

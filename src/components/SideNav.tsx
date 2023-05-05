@@ -2,23 +2,25 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useReminders } from "../utils/RemindersContext";
 import ListView from "./ListView";
-import ListInput from "./ListInput";
+import ListInput from "./Inputs/ListInput";
 import TaskList from "./TaskList";
 import calendartwo from "../assets/icons/calendar-two.png";
 import calendar from "../assets/icons/calendar.png";
 import boxes from "../assets/icons/boxes.png";
 import flag from "../assets/icons/red-flag.png";
-import SearchInput from "./SearchInput";
+import SearchInput from "./Inputs/SearchInput";
 
 const SideNav = () => {
   const { setActiveListId, lists, setLists } = useReminders();
   const [name, setName] = useState<string>("");
 
-  const handleListAdd = () => {
-    lists.splice(0, 0, { id: uuidv4(), name });
-    setLists(lists.filter((list) => list.id));
-    setName("");
-    setActiveListId(lists[0].id);
+  const handleListAdd = (e: { code: string }) => {
+    if (e.code === "Enter" && name.length >= 1) {
+      lists.splice(0, 0, { id: uuidv4(), name });
+      setLists(lists.filter((list) => list.id));
+      setName("");
+      setActiveListId(lists[0].id);
+    }
   };
 
   const handleListChange = (event: React.ChangeEvent<HTMLInputElement>) => {

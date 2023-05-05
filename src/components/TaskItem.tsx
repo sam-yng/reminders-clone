@@ -4,7 +4,8 @@ import React, { useCallback, useState } from "react";
 import { useReminders, Task } from "../utils/RemindersContext";
 import check from "../assets/icons/checkmark.png";
 import flag from "../assets/icons/image.png";
-import DateInput from "./DateInput";
+import DateInput from "./Inputs/DateInput";
+import calendar from "../assets/icons/calendar-two.png";
 
 const TaskItem = ({ id, name, flagged, listId }: Task) => {
   const { setTasks, tasks } = useReminders();
@@ -32,7 +33,7 @@ const TaskItem = ({ id, name, flagged, listId }: Task) => {
   };
 
   const handleDate = (e: { code: string }) => {
-    if (e.code === "Enter") {
+    if (e.code === "Enter" && inputDate.length === 10) {
       setTasks(
         tasks.map((task) =>
           task.id === id ? { ...task, date: inputDate } : task
@@ -48,11 +49,12 @@ const TaskItem = ({ id, name, flagged, listId }: Task) => {
         onClick={onClickRemove}
         className="cursor-pointer hover:line-through text-[18px] md:text-[22px]"
       >
-        <li>{name}</li>
+        <li key={listId}>{name}</li>
       </button>
       <DateInput
         inputDate={inputDate}
         placeholder="Add Date"
+        icon={calendar}
         handleDate={handleDate}
         handleUpdate={handleDateUpdate}
       />
