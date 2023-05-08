@@ -16,7 +16,7 @@ const Main = () => {
     switch (activeListId) {
       case "today":
         return tasks
-          .filter((task) => task.date === format(new Date(), "MM/dd/yyy"))
+          .filter((task) => task.date === format(new Date(), "dd/MM/yyyy"))
           .map((item) => (
             <TaskItem
               key={item.id}

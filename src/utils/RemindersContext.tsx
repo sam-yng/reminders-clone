@@ -56,6 +56,8 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
     if (data !== null) setLists(JSON.parse(data));
     const taskData = localStorage.getItem("TASKS");
     if (taskData !== null) setTasks(JSON.parse(taskData));
+    const themeData = localStorage.getItem("THEME");
+    if (themeData !== null) setTheme(JSON.parse(themeData));
   }, []);
 
   useEffect(() => {
@@ -69,6 +71,12 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
       localStorage.setItem("TASKS", JSON.stringify(tasks));
     });
   }, [tasks]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.setItem("THEME", JSON.stringify(theme));
+    });
+  }, [theme]);
 
   const value = useMemo(
     () => ({

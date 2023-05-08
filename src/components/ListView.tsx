@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { isToday } from "date-fns";
+import { format, isToday } from "date-fns";
 import { useReminders } from "../utils/RemindersContext";
 
 type ListViewProps = {
@@ -37,7 +37,9 @@ const ListView: React.FC<ListViewProps> = ({ icon, type }) => {
           if (!date) {
             break;
           }
-          num = isToday(date) ? num + 1 : num;
+          const input = format(date, "dd/MM/yyyy");
+          const newDate = new Date(input);
+          num = isToday(newDate) ? num + 1 : num;
           break;
         }
         case "scheduled":

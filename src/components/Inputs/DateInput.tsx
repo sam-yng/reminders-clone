@@ -20,7 +20,7 @@ const DateInput = ({
       <img alt="icon" className="h-4 pl-2" src={icon} />
       <input
         name="date"
-        className="bg-slate-100 w-[70%] ml-2 text-center text-[13px] focus:outline-none"
+        className="bg-slate-100 text-black w-[70%] ml-2 text-center text-[13px] focus:outline-none"
         type="text"
         placeholder={placeholder}
         onKeyDown={handleDate}
