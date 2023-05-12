@@ -129,7 +129,11 @@ const Main = () => {
   };
 
   if (!activeListId) {
-    return <div className={`w-[75%] pl-16 pt-8 ${theme ? "light" : "dark"}`} />;
+    return (
+      <div
+        className={`w-[75%] pl-16 pt-8 md:visible ${theme ? "light" : "dark"}`}
+      />
+    );
   }
 
   return (
