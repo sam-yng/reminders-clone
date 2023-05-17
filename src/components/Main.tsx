@@ -1,19 +1,22 @@
 import React, { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
-import { useReminders } from "../utils/RemindersContext";
+import {
+  doesSelectedListHaveAnId,
+  useReminders,
+} from "../utils/RemindersContext";
 import "react-calendar/dist/Calendar.css";
 import arrow from "../assets/icons/right-arrow.png";
 import TaskItem from "./TaskItem";
 import TaskInput from "./Inputs/TaskInput";
 
 const Main = () => {
-  const { setActiveListId, setTasks, tasks, activeListId, lists, theme } =
+  const { setActiveListId, setTasks, tasks, selectedList, lists, theme } =
     useReminders();
   const [input, setInput] = useState<string>("");
 
   const tasksByList = useMemo(() => {
-    switch (activeListId) {
+    switch (selectedList) {
       case "today":
         return tasks
           .filter((task) => task.date === format(new Date(), "dd/MM/yyyy"))
@@ -23,7 +26,7 @@ const Main = () => {
               id={item.id}
               name={item.name}
               flagged={item.flagged}
-              listId={activeListId}
+              listId={selectedList}
             />
           ));
       case "scheduled":
@@ -35,7 +38,7 @@ const Main = () => {
               id={item.id}
               name={item.name}
               flagged={item.flagged}
-              listId={activeListId}
+              listId={selectedList}
             />
           ));
       case "flagged":
@@ -47,7 +50,7 @@ const Main = () => {
               id={item.id}
               name={item.name}
               flagged={item.flagged}
-              listId={activeListId}
+              listId={selectedList}
             />
           ));
       case "all":
@@ -57,26 +60,28 @@ const Main = () => {
             id={item.id}
             name={item.name}
             flagged={item.flagged}
-            listId={activeListId}
+            listId={selectedList}
           />
         ));
+      case null:
+        return [];
       default:
         return tasks
-          .filter((task) => task.listId === activeListId)
+          .filter((task) => task.listId === selectedList.listId)
           .map((item) => (
             <TaskItem
               key={item.id}
               id={item.id}
               name={item.name}
               flagged={item.flagged}
-              listId={activeListId}
+              listId={selectedList?.listId}
             />
           ));
     }
-  }, [activeListId, tasks]);
+  }, [selectedList, tasks]);
 
   const listName = useMemo(() => {
-    switch (activeListId) {
+    switch (selectedList) {
       case "today":
         return "Today";
       case "scheduled":
@@ -86,12 +91,12 @@ const Main = () => {
       case "all":
         return "All";
       default:
-        return lists.find((list) => list.id === activeListId)?.name;
+        return lists.find((list) => list.id === selectedList?.listId)?.name;
     }
-  }, [activeListId, lists]);
+  }, [selectedList, lists]);
 
   const inputStatus = useMemo(() => {
-    switch (activeListId) {
+    switch (selectedList) {
       case "today":
         return true;
       case "scheduled":
@@ -103,11 +108,11 @@ const Main = () => {
       default:
         return false;
     }
-  }, [activeListId]);
+  }, [selectedList]);
 
   const handleBack = (e: { code: string }) => {
     if (e.code === "Escape") {
-      setActiveListId("");
+      setActiveListId(null);
     }
   };
 
@@ -116,19 +121,21 @@ const Main = () => {
   };
 
   const handleTaskAdd = (e: { code: string }) => {
-    if (e.code === "Enter") {
+    if (e.code === "Enter" && selectedList) {
       tasks.splice(0, 0, {
         id: uuidv4(),
         name: input,
         flagged: false,
-        listId: activeListId || null,
+        listId: doesSelectedListHaveAnId(selectedList)
+          ? selectedList.listId
+          : null,
       });
       setTasks(tasks.filter((task) => task.id));
       setInput("");
     }
   };
 
-  if (!activeListId) {
+  if (!selectedList) {
     return (
       <div
         className={`w-[75%] pl-16 pt-8 md:visible ${theme ? "light" : "dark"}`}
@@ -141,7 +148,7 @@ const Main = () => {
       <main className={`m-auto md:ml-16 md:mt-8 ${theme ? "light" : "dark"}`}>
         <button
           type="button"
-          onClick={() => setActiveListId("")}
+          onClick={() => setActiveListId(null)}
           onKeyDown={handleBack}
         >
           <img

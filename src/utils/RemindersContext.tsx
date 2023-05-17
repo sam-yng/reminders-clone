@@ -25,15 +25,30 @@ export type List = {
   name: string;
 };
 
+export type SelectedListId = { listId: string };
+
+export type SelectedList =
+  | "today"
+  | "scheduled"
+  | "flagged"
+  | "all"
+  | SelectedListId
+  | null;
+
+export const doesSelectedListHaveAnId = (
+  list: SelectedList
+): list is SelectedListId =>
+  (list as SelectedListId | null)?.listId !== undefined;
+
 export type RemindersContextType = {
   lists: List[];
-  activeListId: string | null;
+  selectedList: SelectedList;
 
   tasks: Task[];
   setTasks: (task: Task[]) => void;
 
   setLists: (lists: List[]) => void;
-  setActiveListId: (listId: string) => void;
+  setActiveListId: (listId: SelectedList) => void;
 
   theme: boolean;
   setTheme: (theme: boolean) => void;
@@ -47,7 +62,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [lists, setLists] = useState<List[]>([]);
-  const [activeListId, setActiveListId] = useState<string | null>(null);
+  const [selectedList, setActiveListId] = useState<SelectedList>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [theme, setTheme] = useState<boolean>(true);
 
@@ -79,9 +94,9 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [theme]);
 
   const value = useMemo(
-    () => ({
+    (): RemindersContextType => ({
       lists,
-      activeListId,
+      selectedList,
       setLists,
       setActiveListId,
       tasks,
@@ -89,7 +104,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({
       theme,
       setTheme,
     }),
-    [activeListId, lists, tasks, theme]
+    [selectedList, lists, tasks, theme]
   );
 
   return (

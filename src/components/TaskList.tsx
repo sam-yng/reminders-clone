@@ -8,29 +8,28 @@ const TaskList = ({ id, name }: List) => {
     lists,
     setLists,
     setActiveListId,
-    activeListId,
+    selectedList: activeListId,
     theme,
     setTasks,
     tasks,
   } = useReminders();
 
   const newListView = () => {
-    setActiveListId(id);
+    setActiveListId({ listId: id });
   };
 
   const deleteList = () => {
     setTasks(tasks.filter((task) => task.id === activeListId));
     setLists(lists.filter((list) => list.id !== id));
-    setActiveListId("");
+    setActiveListId(null);
   };
 
   return (
-    <div key={id} className="flex flex-row justify-between">
-      <button type="button" onClick={newListView}>
-        <li id="name" className="m-2 font-robreg">
-          {name}
-        </li>
+    <li key={id} className="flex flex-row justify-between">
+      <button type="button" onClick={newListView} className="m-2 font-robreg">
+        {name}
       </button>
+
       <button type="button" onClick={deleteList}>
         <img
           alt="cross"
@@ -38,7 +37,7 @@ const TaskList = ({ id, name }: List) => {
           src={theme === true ? cross : whiteCross}
         />
       </button>
-    </div>
+    </li>
   );
 };
 

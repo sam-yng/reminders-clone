@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { format, isToday } from "date-fns";
+import parse from "date-fns/parse";
 import { useReminders } from "../utils/RemindersContext";
 
 type ListViewProps = {
@@ -30,7 +31,9 @@ const ListView: React.FC<ListViewProps> = ({ icon, type }) => {
 
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
-      const date = task.date ? new Date(task.date) : null;
+      const date = task.date
+        ? parse(task.date, "dd/MM/yyyy", new Date())
+        : null;
 
       switch (type) {
         case "today": {
